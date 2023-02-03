@@ -3,54 +3,16 @@
 #include <iostream>
 #include<string>
 #include<vector>
+#include "Command.h"
 
 using namespace std;
-
-enum Event 
-{ 
-	START, END, CPU, SSD, NCORES, LOCK, UNLOCK
-};
-
-const char* Event(Event e)
-{
-	switch (e) 
-	{
-	case START:
-		return "START";
-	case END:
-		return "END";
-	case CPU:
-		return "CPU";
-	case SSD:
-			return "SSD";
-	case NCORES:
-		return"NCORES";
-	case LOCK:
-		return "LOCK";
-	case UNLOCK:
-		return "UNLOCK";
-	}
-}
-class Command //command is object
-{
-public:
-	Event event;
-	int time;
-
-	Command(Event _event, int _time)
-	{
-		event = _event;
-		time = _time;
-
-	};
-	Command()
-	{};
-
-};
 
 class Process
 {
 public:
+
+	static const char* Current_Command;
+
 	vector<Command*>* instructions = new vector<Command*>();
 	//Command instruct("CPU", 10);
 
@@ -63,6 +25,10 @@ public:
 		instructions->push_back(new Command(SSD, 20));
 		instructions->push_back(new Command(UNLOCK, 0));
 		instructions->push_back(new Command(END, 0));
+	}
+	void DoWork()
+	{
+
 	}
 
 	void Print()

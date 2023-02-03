@@ -131,8 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPU.h" />
-    <ClInclude Include="Events.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="Hardware.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LockQueue.h" />
     <ClInclude Include="OperatingSystem.h" />

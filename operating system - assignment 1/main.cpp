@@ -54,10 +54,8 @@ int main()
 {
 	Process test;
 	test.Print();
-	cout << Event(CPU) << " " << Event(SSD) << endl;
+	cout << ToString(CPU) << " " << ToString(SSD) << endl;
 
 	enum Event c = CPU;
 	enum Event s = SSD;
-	
-	
 }
