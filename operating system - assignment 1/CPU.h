@@ -2,5 +2,10 @@
 
 class CPU
 {
+public:
+	void DoWork()
+	{
+
+	}
 };
 
