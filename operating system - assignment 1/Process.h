@@ -25,7 +25,8 @@ public:
 	long Timer = 0;
 	vector<Command*>* List = new vector<Command*>();
 	queue<Command*> ReadyQ;
-
+	queue<Command*> SSDQ;
+	queue<Command*> LockQ;
 	Status Status = Idle;
 
 	int i = 0;
@@ -78,22 +79,22 @@ public:
 		}
 		else if (Current()->event == CPU)
 		{
-			//add to RQ
 			ReadyQ.push(Current());
-			cout << "in the Queue we have: " << ReadyQ.front()->event << endl;
-
+			cout << "In the Queue we have: " << ToString(ReadyQ.front()->event) << endl;
 		}
 		else if (Current()->event == LOCK)
 		{
-			//add to LQ
+			LockQ.push(Current());
+			cout << "In the Queue we have: " << ToString(LockQ.front()->event) << endl;
 		}
 		else if (Current()->event == SSD)
 		{
-
+			SSDQ.push(Current());
+			cout << "In the Queue we have: " << ToString(SSDQ.front()->event) << endl;
 		}
 		else if (Current()->event == UNLOCK)
 		{
-			//add to SSDQ
+			
 		}
 		else if (Current()->event == END)
 		{
