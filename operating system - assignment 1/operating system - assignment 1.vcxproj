@@ -141,6 +141,8 @@
     <ClInclude Include="ReadyQueue.h" />
     <ClInclude Include="SSD.h" />
     <ClInclude Include="SSDQueue.h" />
+    <ClInclude Include="TestEnum.h" />
+    <ClInclude Include="TestProcess.h" />
     <ClInclude Include="UserConsole.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

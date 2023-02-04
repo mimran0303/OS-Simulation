@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{ac57368f-17e6-4b59-aff8-69bdfdba8824}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,9 +27,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SSD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Process.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
@@ -55,6 +55,15 @@
     </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestProcess.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestEnum.h">
+      <Filter>Test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

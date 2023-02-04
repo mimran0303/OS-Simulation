@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include<string>
+#include <queue>
 #include<vector>
 #include "Command.h"
 
@@ -10,12 +11,14 @@ using namespace std;
 class Process
 {
 public:
-
-	static const char* Current_Command;
-
-	vector<Command*>* List = new vector<Command*>();
 	
+	static const char* Current_Command;
+	long Timer = 0;
+	vector<Command*>* List = new vector<Command*>();
+	queue<Command*> ReadyQ;
+
 	int i = 0;
+
 	Command* Current()
 	{
 		if (i >= 0 && i < List->size())
@@ -23,7 +26,14 @@ public:
 		else
 			return NULL;
 	}
-
+	void Next_Command()
+	{
+		i++;
+	}
+	void Reset()
+	{
+		Timer = 0;
+	}
 	Process()
 	{
 		List->push_back(new Command(NCORES, 2));
@@ -55,11 +65,14 @@ public:
 		}
 		else if (Current()->event == CPU)
 		{
+			//add to RQ
+			ReadyQ.push(Current());
+			cout << "in the Queue we have: " << ReadyQ.front() << endl;
 
 		}
 		else if (Current()->event == LOCK)
 		{
-
+			//add to LQ
 		}
 		else if (Current()->event == SSD)
 		{
@@ -67,13 +80,13 @@ public:
 		}
 		else if (Current()->event == UNLOCK)
 		{
-
+			//add to SSDQ
 		}
 		else if (Current()->event == END)
 		{
-
+			return;
 		}
-
+		Timer++;
 		i++;
 	}
 
