@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-	// test_process();
-	test_enum();
+	test_process();
+	// test_enum();
 }
 

@@ -8,6 +8,15 @@
 
 using namespace std;
 
+enum Status
+{
+	Idle,
+	Waiting,
+	Running,
+	Busy,
+	Finish
+};
+
 class Process
 {
 public:
@@ -16,6 +25,8 @@ public:
 	long Timer = 0;
 	vector<Command*>* List = new vector<Command*>();
 	queue<Command*> ReadyQ;
+
+	Status Status = Idle;
 
 	int i = 0;
 
@@ -53,6 +64,8 @@ public:
 			return;
 		}
 
+		Status = Running;
+
 		cout << "process do work " << ToString(Current()->event) << endl;
 
 		if (Current()->event == NCORES)
@@ -67,7 +80,7 @@ public:
 		{
 			//add to RQ
 			ReadyQ.push(Current());
-			cout << "in the Queue we have: " << ReadyQ.front() << endl;
+			cout << "in the Queue we have: " << ReadyQ.front()->event << endl;
 
 		}
 		else if (Current()->event == LOCK)
@@ -84,7 +97,7 @@ public:
 		}
 		else if (Current()->event == END)
 		{
-			return;
+			Status = Finish;
 		}
 		Timer++;
 		i++;
