@@ -9,10 +9,10 @@
 
 int test_enum()
 {
-	cout << ToString(CPU) << " " << ToString(SSD) << endl;
+	/*cout << ToString(CPU) << " " << ToString(SSD) << endl;
 
 	enum Event c = CPU;
-	enum Event s = SSD;
+	enum Event s = SSD;*/
 
 	return 0;
 }

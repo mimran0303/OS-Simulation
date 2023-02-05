@@ -1,26 +1,26 @@
 #pragma once
 enum Event
 {
-	START, END, CPU, SSD, NCORES, LOCK, UNLOCK
+	EVENT_START, EVENT_END, EVENT_CPU, EVENT_SSD, EVENT_NCORES, EVENT_LOCK, EVENT_UNLOCK
 };
 
 const char* ToString(Event e)
 {
 	switch (e)
 	{
-	case START:
+	case EVENT_START:
 		return "START";
-	case END:
+	case EVENT_END:
 		return "END";
-	case CPU:
+	case EVENT_CPU:
 		return "CPU";
-	case SSD:
+	case EVENT_SSD:
 		return "SSD";
-	case NCORES:
+	case EVENT_NCORES:
 		return"NCORES";
-	case LOCK:
+	case EVENT_LOCK:
 		return "LOCK";
-	case UNLOCK:
+	case EVENT_UNLOCK:
 		return "UNLOCK";
 	}
 }

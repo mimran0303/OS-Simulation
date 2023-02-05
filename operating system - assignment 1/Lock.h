@@ -1,11 +1,12 @@
 #pragma once
 #include "Command.h"
-class Lock
+class LOCK
 {
 public:
+
 	void DoWork()
 	{
-
+		cout << " LOCK DOING WORK " << endl;
 	}
 };
 

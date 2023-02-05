@@ -10,11 +10,18 @@
 int test_process()
 {
 	Process* p1 = new Process();
-
+	//p1->DoWork();
 	while (true)
 	{
 		p1->DoWork();
 		Sleep(1000);
+		if (p1->Status == EVENT_LOCK)
+		{
+			// if ()
+			{
+
+			}
+		}
 		if (p1->Status == Finish)
 			break;
 	}

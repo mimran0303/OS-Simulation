@@ -5,7 +5,7 @@ class UserConsole
 public:
 	void DoWork()
 	{
-
+		cout << " USER DOING WORK " << endl;
 	}
 };
 

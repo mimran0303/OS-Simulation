@@ -134,7 +134,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Hardware.h" />
     <ClInclude Include="Command.h" />
-    <ClInclude Include="Lock.h" />
+    <ClInclude Include="LOCK.h" />
     <ClInclude Include="LockQueue.h" />
     <ClInclude Include="OperatingSystem.h" />
     <ClInclude Include="Process.h" />

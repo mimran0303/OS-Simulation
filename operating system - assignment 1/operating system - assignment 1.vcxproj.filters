@@ -38,7 +38,7 @@
     <ClInclude Include="CPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lock.h">
+    <ClInclude Include="LOCK.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ReadyQueue.h">

@@ -9,12 +9,9 @@
 class SSD
 {
 public:
-
-	
 	void DoWork()
 	{
-
-		
+		cout << " SSD DOING WORK " << endl;
 	}
 };
 

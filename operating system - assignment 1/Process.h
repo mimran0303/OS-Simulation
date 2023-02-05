@@ -20,16 +20,22 @@ enum Status
 class Process
 {
 public:
-	
-	static const char* Current_Command;
-	long Timer = 0;
-	vector<Command*>* List = new vector<Command*>();
 	queue<Command*> ReadyQ;
 	queue<Command*> SSDQ;
 	queue<Command*> LockQ;
+
+	static const char* Current_Command;
+	long Timer = 0;
+	vector<Command*>* List = new vector<Command*>();
+	
 	Status Status = Idle;
 
 	int i = 0;
+	int _e;
+	Process(int e)
+	{
+		_e = e;
+	}
 
 	Command* Current()
 	{
@@ -48,13 +54,13 @@ public:
 	}
 	Process()
 	{
-		List->push_back(new Command(NCORES, 2));
-		List->push_back(new Command(START, 10));
-		List->push_back(new Command(CPU, 10));
-		List->push_back(new Command(LOCK, 0));
-		List->push_back(new Command(SSD, 20));
-		List->push_back(new Command(UNLOCK, 0));
-		List->push_back(new Command(END, 0));
+		List->push_back(new Command(EVENT_NCORES, 2));
+		List->push_back(new Command(EVENT_START, 10));
+		List->push_back(new Command(EVENT_CPU, 10));
+		List->push_back(new Command(EVENT_LOCK, 0));
+		List->push_back(new Command(EVENT_SSD, 20));
+		List->push_back(new Command(EVENT_UNLOCK, 0));
+		List->push_back(new Command(EVENT_END, 0));
 	}
 
 	void DoWork()
@@ -69,34 +75,34 @@ public:
 
 		cout << "process do work " << ToString(Current()->event) << endl;
 
-		if (Current()->event == NCORES)
+		if (Current()->event == EVENT_NCORES)
 		{
 
 		}
-		else if (Current()->event == START)
+		else if (Current()->event == EVENT_START)
 		{
 
 		}
-		else if (Current()->event == CPU)
+		else if (Current()->event == EVENT_CPU)
 		{
 			ReadyQ.push(Current());
 			cout << "In the Queue we have: " << ToString(ReadyQ.front()->event) << endl;
 		}
-		else if (Current()->event == LOCK)
+		else if (Current()->event == EVENT_LOCK)
 		{
 			LockQ.push(Current());
 			cout << "In the Queue we have: " << ToString(LockQ.front()->event) << endl;
 		}
-		else if (Current()->event == SSD)
+		else if (Current()->event == EVENT_SSD)
 		{
 			SSDQ.push(Current());
 			cout << "In the Queue we have: " << ToString(SSDQ.front()->event) << endl;
 		}
-		else if (Current()->event == UNLOCK)
+		else if (Current()->event == EVENT_UNLOCK)
 		{
 			
 		}
-		else if (Current()->event == END)
+		else if (Current()->event == EVENT_END)
 		{
 			Status = Finish;
 		}
