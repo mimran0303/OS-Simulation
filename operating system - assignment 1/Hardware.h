@@ -1,10 +1,10 @@
 #pragma once
+
 #include "Command.h"
 #include "SSD.h"
 #include "CPU.h"
 #include "LOCK.h"
 #include "UserConsole.h"
-
 
 class Hardware
 {

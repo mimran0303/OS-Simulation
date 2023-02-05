@@ -135,12 +135,9 @@
     <ClInclude Include="Hardware.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="LOCK.h" />
-    <ClInclude Include="LockQueue.h" />
     <ClInclude Include="OperatingSystem.h" />
     <ClInclude Include="Process.h" />
-    <ClInclude Include="ReadyQueue.h" />
     <ClInclude Include="SSD.h" />
-    <ClInclude Include="SSDQueue.h" />
     <ClInclude Include="TestEnum.h" />
     <ClInclude Include="TestProcess.h" />
     <ClInclude Include="UserConsole.h" />

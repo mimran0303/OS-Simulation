@@ -1,6 +1,8 @@
 #pragma once
+
 #include <iostream>
 #include <string>
+
 #include "Command.h"
 #include "Process.h"
 #include <vector>

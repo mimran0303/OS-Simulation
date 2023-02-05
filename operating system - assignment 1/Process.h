@@ -10,11 +10,10 @@ using namespace std;
 
 enum Status
 {
-	Idle,
-	Waiting,
-	Running,
-	Busy,
-	Finish
+	Idle, // When nothing to di
+	Waiting, // Waiting in Queue for resource such as SSD, LOCk or UserConsole
+	Running, // On CPU, SSD, User Console
+	Terminate // Program finsihed nothing to run
 };
 
 class Process
@@ -24,18 +23,12 @@ public:
 	queue<Command*> SSDQ;
 	queue<Command*> LockQ;
 
-	static const char* Current_Command;
-	long Timer = 0;
 	vector<Command*>* List = new vector<Command*>();
-	
-	Status Status = Idle;
-
 	int i = 0;
-	int _e;
-	Process(int e)
-	{
-		_e = e;
-	}
+
+	long Timer = 0;
+
+	Status Status = Idle;
 
 	Command* Current()
 	{
@@ -44,23 +37,25 @@ public:
 		else
 			return NULL;
 	}
-	void Next_Command()
+
+	void NextCommand()
 	{
 		i++;
 	}
+
 	void Reset()
 	{
 		Timer = 0;
 	}
 	Process()
 	{
-		List->push_back(new Command(EVENT_NCORES, 2));
-		List->push_back(new Command(EVENT_START, 10));
-		List->push_back(new Command(EVENT_CPU, 10));
-		List->push_back(new Command(EVENT_LOCK, 0));
-		List->push_back(new Command(EVENT_SSD, 20));
-		List->push_back(new Command(EVENT_UNLOCK, 0));
-		List->push_back(new Command(EVENT_END, 0));
+		List->push_back(new Command(EVT_NCORES, 2));
+		List->push_back(new Command(EVT_START, 10));
+		List->push_back(new Command(EVT_CPU, 10));
+		List->push_back(new Command(EVT_LOCK, 0));
+		List->push_back(new Command(EVT_SSD, 20));
+		List->push_back(new Command(EVT_UNLOCK, 0));
+		List->push_back(new Command(EVT_END, 0));
 	}
 
 	void DoWork()
@@ -75,36 +70,36 @@ public:
 
 		cout << "process do work " << ToString(Current()->event) << endl;
 
-		if (Current()->event == EVENT_NCORES)
+		if (Current()->event == EVT_NCORES)
 		{
 
 		}
-		else if (Current()->event == EVENT_START)
+		else if (Current()->event == EVT_START)
 		{
 
 		}
-		else if (Current()->event == EVENT_CPU)
+		else if (Current()->event == EVT_CPU)
 		{
 			ReadyQ.push(Current());
 			cout << "In the Queue we have: " << ToString(ReadyQ.front()->event) << endl;
 		}
-		else if (Current()->event == EVENT_LOCK)
+		else if (Current()->event == EVT_LOCK)
 		{
 			LockQ.push(Current());
 			cout << "In the Queue we have: " << ToString(LockQ.front()->event) << endl;
 		}
-		else if (Current()->event == EVENT_SSD)
+		else if (Current()->event == EVT_SSD)
 		{
 			SSDQ.push(Current());
 			cout << "In the Queue we have: " << ToString(SSDQ.front()->event) << endl;
 		}
-		else if (Current()->event == EVENT_UNLOCK)
+		else if (Current()->event == EVT_UNLOCK)
 		{
 			
 		}
-		else if (Current()->event == EVENT_END)
+		else if (Current()->event == EVT_END)
 		{
-			Status = Finish;
+			Status = Terminate;
 		}
 		Timer++;
 		i++;

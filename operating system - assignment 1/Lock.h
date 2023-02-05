@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Command.h"
+
 class LOCK
 {
 public:

@@ -41,15 +41,6 @@
     <ClInclude Include="LOCK.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ReadyQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SSDQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LockQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Hardware.h">
       <Filter>Header Files</Filter>
     </ClInclude>

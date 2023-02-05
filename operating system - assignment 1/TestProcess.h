@@ -15,14 +15,14 @@ int test_process()
 	{
 		p1->DoWork();
 		Sleep(1000);
-		if (p1->Status == EVENT_LOCK)
+		if (p1->Status == EVT_LOCK)
 		{
 			// if ()
 			{
 
 			}
 		}
-		if (p1->Status == Finish)
+		if (p1->Status == Terminate)
 			break;
 	}
 
