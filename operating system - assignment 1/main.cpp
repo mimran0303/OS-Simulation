@@ -14,13 +14,18 @@ int main()
 	Process* p = new Process;
 	Command* c = new Command;
 
-	string instruction;
-	getline(cin, instruction);
-	cout << "Line: " << instruction << endl;
-	cout << endl;
-	Command* inst = new Command(instruction);
-	inst->_Split(instruction);
-
+	while (true)
+	{
+		string instruction;
+		getline(cin, instruction);
+		if (instruction.empty())
+			break;
+		cout << "Line: " << instruction << endl;
+		cout << endl;
+		Command* inst = new Command(instruction);
+		inst->_Split(instruction);
+	}
+	cout << "finished reading input: " << endl;
 
 
 	while (true)
