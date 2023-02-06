@@ -11,6 +11,7 @@ typedef queue<Process*> LockQueue;
 typedef queue<Process*> ReadyQueue;
 typedef queue<Process*> SSDQueue;
 
+int ms=0;
 class OperatingSystem
 {
 public:
@@ -38,7 +39,8 @@ public:
 
 		for (int j = 0;j < 4;j++)
 		{
-			// LockQ[j]->DoWork();
+
+			//LockQ[j]->DoWork();
 		}
 	}
 	void Process_Handler(Process* process)
@@ -49,35 +51,42 @@ public:
 			return;
 		}
 
-		if (process->Current()->event == EVT_NCORES)
+		else if (process->Current()->event == EVT_NCORES)//ncores = # of cpu
 		{
 
 		}
-		else if (process ->Current()->event == EVT_START)
+		else if (process ->Current()->event == EVT_START) //new process created after every start
 		{
 			process->Status = Running;
+			ms += ms;
 		}
-		else if (process->Current()->event == EVT_CPU)
+		else if (process->Current()->event == EVT_CPU)//process goes to RQ
 		{
 			process->Status = Waiting;
 			ReadyQ->push(process);
+			ms += ms;
 		}
-		else if (process->Current()->event == EVT_LOCK)
+		else if (process->Current()->event == EVT_LOCK)//Specified lock, process goes to lock queue
 		{
 			process->Status = Waiting;
 			LockQ[0]->push(process);
 		}
 	
-		else if (process->Current()->event == EVT_SSD)
+		else if (process->Current()->event == EVT_SSD)//goes to ssd queue
 		{
 			process->Status = Waiting;
 			SSDQ->push(process);
+			ms += ms;
 		}
-		else if (process->Current()->event == EVT_UNLOCK)
+		else if (process->Current()->event == EVT_OUTPUT)//goes to user
+		{
+			ms += ms;
+		}
+		else if (process->Current()->event == EVT_UNLOCK)//process exits and goes to ready queue
 		{
 
 		}
-		else if (process->Current()->event == EVT_END)
+		else if (process->Current()->event == EVT_END)//process terminates
 		{
 			process->Status = Terminate;
 		}

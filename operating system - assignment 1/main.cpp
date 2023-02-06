@@ -1,6 +1,7 @@
 #include <iostream>
 #include<string>
 #include "TestEnum.h"
+#include"Event.h"
 #include "TestProcess.h"
 #include"Hardware.h"
 #include"OperatingSystem.h"
@@ -10,13 +11,24 @@ int main()
 {
 	OperatingSystem* os = new OperatingSystem();
 	Hardware* hw = new Hardware;
+	Process* p = new Process;
+	Command* c = new Command;
+
+	string instruction;
+	getline(cin, instruction);
+	cout << "Line: " << instruction << endl;
+	cout << endl;
+	Command* inst = new Command(instruction);
+	inst->_Split(instruction);
+
+
 
 	while (true)
 	{
-		os->DoWork();
-		hw->DoWork();
-		Sleep(1000);
-		cout << "----------------------------" << endl;
+		//os->DoWork();
+		//hw->DoWork();
+		//Sleep(1000);
+		//cout << "----------------------------" << endl;
 	}
 }
 

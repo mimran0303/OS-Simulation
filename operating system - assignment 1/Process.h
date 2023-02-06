@@ -23,8 +23,9 @@ public:
 	queue<Command*> SSDQ;
 	queue<Command*> LockQ;
 
-	vector<Command*>* List = new vector<Command*>();
+	vector<Command*>* Commands = new vector<Command*>();
 	int i = 0;
+	int amount;
 
 	long Timer = 0;
 
@@ -32,8 +33,8 @@ public:
 
 	Command* Current()
 	{
-		if (i >= 0 && i < List->size())
-			return List->at(i);
+		if (i >= 0 && i < Commands->size())
+			return Commands->at(i);
 		else
 			return NULL;
 	}
@@ -49,13 +50,14 @@ public:
 	}
 	Process()
 	{
-		List->push_back(new Command(EVT_NCORES, 2));
-		List->push_back(new Command(EVT_START, 10));
-		List->push_back(new Command(EVT_CPU, 10));
-		List->push_back(new Command(EVT_LOCK, 0));
-		List->push_back(new Command(EVT_SSD, 20));
-		List->push_back(new Command(EVT_UNLOCK, 0));
-		List->push_back(new Command(EVT_END, 0));
+		Commands->push_back(new Command(EVT_NCORES, 2));
+		Commands->push_back(new Command(EVT_START, 10));
+		Commands->push_back(new Command(EVT_CPU, 10));
+		Commands->push_back(new Command(EVT_LOCK, 0));
+		Commands->push_back(new Command(EVT_SSD, 20));
+		Commands->push_back(new Command(EVT_OUTPUT, 20));
+		Commands->push_back(new Command(EVT_UNLOCK, 0));
+		Commands->push_back(new Command(EVT_END, 0));
 	}
 
 	void DoWork()
@@ -70,7 +72,7 @@ public:
 
 		cout << "process do work " << ToString(Current()->event) << endl;
 
-		if (Current()->event == EVT_NCORES)
+		if (Current()->event == EVT_NCORES)//we need to
 		{
 
 		}
@@ -107,7 +109,7 @@ public:
 
 	void Print()
 	{
-		for (auto c : *List)
+		for (auto c : *Commands)
 		{
 			cout << "event:" << c->event << " time:" << c->time << endl;
 		}
