@@ -139,6 +139,7 @@
     <ClInclude Include="Process.h" />
     <ClInclude Include="SSD.h" />
     <ClInclude Include="TestEnum.h" />
+    <ClInclude Include="Testing.h" />
     <ClInclude Include="TestProcess.h" />
     <ClInclude Include="UserConsole.h" />
   </ItemGroup>

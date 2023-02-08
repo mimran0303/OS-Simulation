@@ -21,6 +21,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UserConsole.h">
@@ -55,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="TestEnum.h">
       <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="testing.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

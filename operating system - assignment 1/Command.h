@@ -9,10 +9,12 @@ class Command
 {
 public:
 
-	string ev;
+	// Event and Time are required values for object
 	Event event;
-
 	int time;
+
+	// Following can be manipulated or changes later
+	string ev;
 	int i;
 	int _amount;
 
@@ -29,23 +31,24 @@ public:
 		time = _time;
 	};
 
-	Command(string _ev, int _time)
+	Command(string _param_ev /* CPU */, int _param_time)
 	{
-		_ev = ev;
-		time = _time;
-		if (_ev == "START")//adds to time and amount of processes
+		ev = _param_ev;
+		time = _param_time;
+
+		if (_stricmp(_param_ev.c_str(), "START")==0)
 		{
 			event = EVT_START;
 		}
-		if (_ev == "CPU")
+		if (_stricmp(_param_ev.c_str(), "CPU") == 0)
 		{
 			event = EVT_CPU;
 		}
-		if (_ev == "SSD")
+		if (_stricmp(_param_ev.c_str(), "SSD") == 0)
 		{
 			event = EVT_SSD;
 		}
-		if (_ev == "USER")
+		if (_stricmp(_param_ev.c_str(), "USER") == 0)
 		{
 			event = EVT_OUTPUT;
 		}
@@ -113,8 +116,12 @@ public:
 		while (split != NULL)
 		{
 			cout << split << endl;
+			result->push_back(split);
 			split = strtok(NULL, " ");
-		}
+		} 
 		return result;
 	}
 };
+
+
+

@@ -1,9 +1,10 @@
 #pragma once
 
 #include <iostream>
-#include<string>
+#include <string>
 #include <queue>
-#include<vector>
+#include <vector>
+
 #include "Command.h"
 
 using namespace std;
@@ -30,7 +31,6 @@ public:
 	long Timer = 0;
 
 	Status Status = Idle;
-
 	Command* Current()
 	{
 		if (i >= 0 && i < Commands->size())
