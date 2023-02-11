@@ -24,7 +24,7 @@ public:
 	queue<Command*> SSDQ;
 	queue<Command*> LockQ;
 
-	vector<Command*>* Commands = new vector<Command*>() ;//commands added to
+	vector<Command*>* CommandList = new vector<Command*>() ;//commands added to
 	int i = 0;
 	int amount;
 
@@ -33,8 +33,8 @@ public:
 	Status Status = Idle;
 	Command* Current()
 	{
-		if (i >= 0 && i < Commands->size())
-			return Commands->at(i);
+		if (i >= 0 && i < CommandList->size())
+			return CommandList->at(i);
 		else
 			return NULL;
 	}
@@ -112,7 +112,7 @@ public:
 
 	void Print()
 	{
-		for (auto c : *Commands)
+		for (auto c : *CommandList)
 		{
 			cout << "event:" << c->event << " time:" << c->time << endl;
 		}
