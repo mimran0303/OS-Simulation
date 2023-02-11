@@ -13,7 +13,7 @@ public:
 	SSD *Ssd;
 	CPU *Cpu;
 	UserConsole *UC;
-	LOCK *lock[4];
+	Lock *lock[4];
 
 	Hardware()
 	{
@@ -23,7 +23,7 @@ public:
 
 		for (int j = 0;j < 4;j++)
 		{
-			lock[j] = new LOCK();
+			lock[j] = new Lock();
 		}
 	}
 	void DoWork()

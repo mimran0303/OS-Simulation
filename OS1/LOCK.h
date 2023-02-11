@@ -2,7 +2,7 @@
 
 #include "Command.h"
 
-class LOCK
+class Lock
 {
 public:
 

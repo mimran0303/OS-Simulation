@@ -17,17 +17,34 @@ int main()
 	Process* p = new Process;
 	Command* c = new Command;
 
-	
+	//
+	// Stage 1: Create Processes
+	//
 	while (true)
 	{
 		string line;
 		cout << "enter line" << endl;
 		getline(cin, line);
 		if (line.empty())
+			break;
+		SplitAddToCommand(line);
+	}
+
+	//
+	// Stage 2: Orchestration - Do Work in Timer
+	//
+	while (true)
+	{
+		p->DoWork();
+		Sleep(1000);
+		if (p->Status == EVT_LOCK)
+		{
+		
+		}
+		if (p->Status == Terminate)
 		{
 			break;
 		}
-		SplitAddToCommand(line);
 	}
 }
 
