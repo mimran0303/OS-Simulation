@@ -24,7 +24,7 @@ public:
 	queue<Command*> SSDQ;
 	queue<Command*> LockQ;
 
-	vector<Command*>* Commands = new vector<Command*>();
+	vector<Command*>* Commands = new vector<Command*>() ;//commands added to
 	int i = 0;
 	int amount;
 
@@ -48,6 +48,8 @@ public:
 	{
 		Timer = 0;
 	}
+
+#if HARDCODED
 	Process()
 	{
 		Commands->push_back(new Command(EVT_NCORES, 2));
@@ -59,6 +61,7 @@ public:
 		Commands->push_back(new Command(EVT_UNLOCK, 0));
 		Commands->push_back(new Command(EVT_END, 0));
 	}
+#endif
 
 	void DoWork()
 	{

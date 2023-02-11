@@ -1,61 +1,4 @@
-#include <iostream>
-#include<string>
-#include "TestEnum.h"
-#include"Event.h"
-#include "TestProcess.h"
-#include"Hardware.h"
-#include"OperatingSystem.h"
-#include "Testing.h"
-
-using namespace std;
-
-int main()
-{
-	OperatingSystem* os = new OperatingSystem();
-	Hardware* hw = new Hardware;
-	Process* p = new Process;
-	Command* c = new Command;
-
-	string test;
-	cout << "enter string" << endl;
-	getline(cin, test);
-	test_split(test);
-	
-
-	//while (true)
-	//{
-	//	string instruction;
-	//	getline(cin, instruction);
-	//	if (instruction.empty())
-	//		break;
-	//	cout << "Line: " << instruction << endl;
-	//	cout << endl;
-	//	Command* inst = new Command(instruction);
-	//	//Command* inst = new Command("CPU", 200);
-	//	inst->_Split(instruction);
-	//}
-	//cout << "finished reading input: " << endl;
-
-
-	//while (true)
-	//{
-	//	//os->DoWork();
-	//	//hw->DoWork();
-	//	//Sleep(1000);
-	//	//cout << "----------------------------" << endl;
-	//}
-	
-}
-
-/*	
-	----------------
-		TESTS
-	----------------
-	test_process();
-	test_enum();
-*/
-
-/*	-------------
+	-------------
 		NOTES
 	--------------
 
@@ -111,4 +54,3 @@ Process 0 is TERMINATED.
 SUMMARY:
 Total elapsed time: 1510 ms
 
-*/
