@@ -10,18 +10,19 @@ using namespace std;
 typedef queue<Process*> LockQueue;
 typedef queue<Process*> ReadyQueue;
 typedef queue<Process*> SSDQueue;
+typedef vector<Process*> ProcessVector;
 
 int ms=0;
 class OperatingSystem
 {
-public:
-
+public: 
 	ReadyQueue *ReadyQ;
 	SSDQueue *SSDQ;
 	LockQueue *LockQ[4];
-
+	ProcessVector *ProcessList;
 	OperatingSystem()
 	{		
+		ProcessList = new ProcessVector;
 		ReadyQ = new ReadyQueue();
 		SSDQ = new SSDQueue();
 

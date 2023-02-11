@@ -14,8 +14,6 @@ int main()
 {
 	OperatingSystem* os = new OperatingSystem();
 	Hardware* hw = new Hardware;
-	Process* p = new Process;
-	Command* c = new Command;
 
 	//
 	// Stage 1: Create Processes
@@ -31,6 +29,7 @@ int main()
 		if (cmd->event == EVT_START)
 		{
 			p = new Process;
+			os->ProcessList->push_back(p);
 		}
 		p->CommandList->push_back(cmd);
 	}
@@ -42,14 +41,7 @@ int main()
 	{
 		p->DoWork();
 		Sleep(1000);
-		if (p->Status == EVT_LOCK)
-		{
 		
-		}
-		if (p->Status == Terminate)
-		{
-			break;
-		}
 	}
 }
 
