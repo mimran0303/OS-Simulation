@@ -5,10 +5,11 @@
 class Lock
 {
 public:
+	bool isLocked = false;
 
 	void DoWork()
 	{
-		cout << " LOCK DOING WORK " << endl;
+		//cout << "Lock Status: " << isLocked << endl;
 	}
 };
 

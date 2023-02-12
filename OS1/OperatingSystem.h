@@ -15,13 +15,12 @@ typedef vector<Process*> ProcessVector;
 
 extern const int LOCK_COUNT;
 
-int ms=0;
+
 
 class OperatingSystem
 {
 public: 
-	bool lock = true;
-	bool unlocked = false;
+	
 
 	ReadyQueue *ReadyQ;
 	SSDQueue *SSDQ;
@@ -44,22 +43,20 @@ public:
 	void DoWork()
 	{
 		cout << " OS DOING WORK " << endl;
-		// ReadyQ->DoWork();
-		// SSDQ->DoWork();
+
+		for (int i = 0;i < ProcessList->size();i++)
+		{
+			Process* p = ProcessList->at(i);
+			ExecuteCommand(p);
+		}
 
 		for (int j = 0;j < LOCK_COUNT; j++)
 		{
 			//LockQ[j]->DoWork();
 		}
-
-		for (int i = 0;i < ProcessList->size();i++)
-		{
-			Process* p = ProcessList->at(i);
-			p->DoWork();
-		}
 	}
 
-	void Process_Handler(Process* process)
+	void ExecuteCommand(Process* process)
 	{
 		if (process->Current() == NULL)
 		{
@@ -68,36 +65,36 @@ public:
 		}
 		else if (process ->Current()->event == EVT_START) //new process created after every start
 		{
+			cout << "New Process " << ToString(process->Current()->event) << endl;
 			process->Status = Running;
-			ms += ms;
 		}
 		else if (process->Current()->event == EVT_CPU)//process goes to RQ
 		{
-		
 			process->Status = Waiting;
 			ReadyQ->push(process);
-			ms += ms;
+			cout << "Process added to ReadyQ" << endl;
 		}
 		else if (process->Current()->event == EVT_LOCK)//lock specified by process is in locked state
 		{
-			//process->Status = Waiting; //PROCESS DOESNT GO HERE
+			process->Status = Waiting; //PROCESS DOESNT GO HERE
 			LockQ[0]->push(process);
+			cout << "Process added to LockQ " << endl;
+		}	
+		else if (process->Current()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
+		{
+			//PROCESS DOESNT GO HERE
+			//we will dequeue if necessary
 		}
-	
 		else if (process->Current()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
 		{
 			process->Status = Waiting;
 			SSDQ->push(process);
-			ms += ms;
+			cout << "Process added to SSDQ" << endl;
 		}
 		else if (process->Current()->event == EVT_OUTPUT)//goes to user immediately
 		{
-			ms += ms;
 		}
-		else if (process->Current()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
-		{
-			//PROCESS DOESNT GO HERE
-		}
+		
 		else if (process->Current()->event == EVT_END)//process terminates
 		{
 			process->Status = Terminate;

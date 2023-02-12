@@ -16,7 +16,7 @@ public:
 	SSD *Ssd;
 	CPU *Cpu;
 	UserConsole *UC;
-	Lock *lock[LOCK_COUNT];
+	Lock *Locks[LOCK_COUNT];
 	CPUVector *CPUS;
 
 	Hardware()
@@ -28,7 +28,7 @@ public:
 
 		for (int j = 0;j < LOCK_COUNT;j++)
 		{
-			lock[j] = new Lock();
+			Locks[j] = new Lock();
 		}
 	}
 
@@ -41,7 +41,7 @@ public:
 
 		for (int j = 0;j < LOCK_COUNT;j++)
 		{
-			lock[j]->DoWork();
+			Locks[j]->DoWork();
 		}
 		for (int i = 0;i < CPUS->size();i++)
 		{

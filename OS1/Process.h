@@ -25,23 +25,24 @@ public:
 	queue<Command*> LockQ;
 
 	vector<Command*>* CommandList = new vector<Command*>() ;//commands added to
-	int i = 0;
+	int c = 0;
 	int amount;
 
 	long Timer = 0;
+	long TotalTime = 0;
 
 	Status Status = Idle;
 	Command* Current()
 	{
-		if (i >= 0 && i < CommandList->size())
-			return CommandList->at(i);
+		if (c >= 0 && c < CommandList->size())
+			return CommandList->at(c);
 		else
 			return NULL;
 	}
 
 	void NextCommand()
 	{
-		i++;
+		c++;
 	}
 
 	void Reset()
@@ -51,46 +52,8 @@ public:
 
 	void DoWork()
 	{
-		if (Current() == NULL)
-		{
-			cout << "WARNING: No command to execute" << endl;
-			return;
-		}
-		if (Current()->event == EVT_NCORES)//we need to
-		{
-			
-		}
-		else if (Current()->event == EVT_START)
-		{
-			Status = Running;
-			cout << "process do work " << ToString(Current()->event) << endl;
-
-		}
-		else if (Current()->event == EVT_CPU)
-		{
-			ReadyQ.push(Current()); //if there are more processes than CPU
-			cout << "In the Queue we have: " << ToString(ReadyQ.front()->event) << endl;
-		}
-		else if (Current()->event == EVT_LOCK)
-		{
-			LockQ.push(Current()); //
-			cout << "In the Queue we have: " << ToString(LockQ.front()->event) << endl;
-		}
-		else if (Current()->event == EVT_SSD)
-		{
-			SSDQ.push(Current());//if the SSD if occupied 
-			cout << "In the Queue we have: " << ToString(SSDQ.front()->event) << endl;
-		}
-		else if (Current()->event == EVT_UNLOCK)
-		{
-			
-		}
-		else if (Current()->event == EVT_END)
-		{
-			Status = Terminate;
-		}
 		Timer++;
-		i++;
+		TotalTime++;
 	}
 
 	void Print()
@@ -102,31 +65,3 @@ public:
 	}
 };
 
-//
-// ----- Developer Examples and Notes -----
-//
-int t = 0;
-bool in_use_ssd = false;
-
-void ProcessExample()
-{
-	if (t == 0)
-	{
-		in_use_ssd = true;
-	}
-	if (t <= 5)
-	{
-		cout << "I am here " << t << " seconds" << endl;
-	}
-
-	if (7 > t && t > 5) //t becomes stuck at 6
-	{
-		cout << "done!" << endl;
-		in_use_ssd = false;
-	}
-	if (t == 15)
-	{
-		t = 0;
-	}
-	t++;
-}
