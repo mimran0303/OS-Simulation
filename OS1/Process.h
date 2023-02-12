@@ -10,10 +10,10 @@ using namespace std;
 
 enum Status
 {
-	Idle, // When nothing to di
-	Waiting, // Waiting in Queue for resource such as SSD, LOCk or UserConsole
+	Ready, // When ready to go to next state
+	Blocked, // Waiting in Queue for resource such as SSD, LOCk or UserConsole
 	Running, // On CPU, SSD, User Console
-	Terminate // Program finsihed nothing to run
+	Terminated // Program finsihed nothing to run
 };
 
 class Process
@@ -24,11 +24,12 @@ public:
 	int c = 0;
 	int amount;
 
-	long Timer = 0;
+	long MaxTimer = 0;
+	long Timer = 0; //starting time is specifies by START
 	long TotalTime = 0;
 
-	Status Status = Idle;
-	Command* Current()
+	Status Status = Ready;
+	Command* CurrentCommand()
 	{
 		if (c >= 0 && c < CommandList->size())
 			return CommandList->at(c);
@@ -36,9 +37,20 @@ public:
 			return NULL;
 	}
 
-	void NextCommand()
+	void MoveToNextCommand()
 	{
 		c++;
+	}
+
+	bool IsTimerExpired()
+	{
+		return Timer >= MaxTimer;
+	}
+
+	void SetTimer(long max)
+	{
+		MaxTimer = max;
+		Reset();
 	}
 
 	void Reset()

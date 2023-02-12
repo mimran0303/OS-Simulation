@@ -38,59 +38,59 @@ public:
 		for (int i = 0;i < ProcessList->size();i++)
 		{
 			Process* p = ProcessList->at(i);
-			ExecuteCommand(p);
+
+			if (p->Status==Ready)
+			{
+				ExecuteNextCommand(p);
+			}
 		}
-
-		for (int j = 0;j < LOCK_COUNT; j++)
-		{
-			//LockQ[j]->DoWork();
-		}
-
-
 	}
 
-	void ExecuteCommand(Process* process)
+	void ExecuteNextCommand(Process* process)
 	{
-		if (process->Current() == NULL)
+		process->MoveToNextCommand();
+
+		if (process->CurrentCommand() == NULL)
 		{
 			cout << "WARNING: No command to execute" << endl;
 			return;
 		}
-		else if (process ->Current()->event == EVT_START) //new process created after every start
+#if PLACEHOLDER_ONLY 
+		else if (process ->CurrentCommand()->event == EVT_START) 
 		{
-			cout << "New Process " << ToString(process->Current()->event) << endl;
-			process->Status = Running;
+			// Actual implementation of EVT_START is in main() that creates a new process
 		}
-		else if (process->Current()->event == EVT_CPU)//process goes to RQ
+#endif
+		else if (process->CurrentCommand()->event == EVT_CPU)//process goes to RQ
 		{
-			process->Status = Waiting;
 			ReadyQ->push(process);
+			process->Status = Blocked;
 			cout << "Process added to ReadyQ" << endl;
 		}
-		else if (process->Current()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
+		else if (process->CurrentCommand()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
 		{
-			process->Status = Waiting;
 			SSDQ->push(process);
+			process->Status = Blocked;
 			cout << "Process added to SSDQ" << endl;
 		}
-		else if (process->Current()->event == EVT_LOCK)//lock specified by process is in locked state
+		else if (process->CurrentCommand()->event == EVT_LOCK)//lock specified by process is in locked state
 		{
-			process->Status = Waiting; //PROCESS DOESNT GO HERE
 			LockQ[0]->push(process);
+			process->Status = Blocked; 
 			cout << "Process added to LockQ " << endl;
 		}	
-		else if (process->Current()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
+		else if (process->CurrentCommand()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
 		{
 			//PROCESS DOESNT GO HERE
 			//we will dequeue if necessary
 		}
-		else if (process->Current()->event == EVT_OUTPUT)//goes to user immediately
+		else if (process->CurrentCommand()->event == EVT_OUTPUT)//goes to user immediately
 		{
 		}
 		
-		else if (process->Current()->event == EVT_END)//process terminates
+		else if (process->CurrentCommand()->event == EVT_END)//process terminates
 		{
-			process->Status = Terminate;
+			process->Status = Terminated;
 		}
 
 	}

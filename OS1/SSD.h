@@ -13,6 +13,7 @@ class SSD
 private:
 
 	SSDQueue* Queue;
+	Process* MyProcess = NULL;
 
 public:
 
@@ -23,7 +24,27 @@ public:
 
 	void DoWork()
 	{
+		if (MyProcess == NULL && Queue->size() >= 1)
+		{
+			MyProcess = Queue->front();
+			Queue->pop();
+			MyProcess->Status = Running;
+			return;
+		}
+
+		if (MyProcess->Status == Running)
+		{
+			MyProcess->DoWork();
+		}
+
+		if (MyProcess->IsTimerExpired())
+		{
+			MyProcess->Status = Ready;
+			MyProcess = NULL;
+		}
+
 		cout << " SSD DOING WORK " << endl;
+
 	}
 };
 

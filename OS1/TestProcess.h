@@ -22,7 +22,7 @@ int test_process()
 
 			}
 		}
-		if (p1->Status == Terminate)
+		if (p1->Status == Terminated)
 			break;
 	}
 
