@@ -65,15 +65,19 @@ public:
 	}
 
 
-	Command(string _event)
+	Command(string _param_ev)
 	{
-		if (_event == "END")//doesnt have time, and no amount
+		if (_stricmp(_param_ev.c_str(), "START") == 0)//doesnt have time, and no amount
+		{
+			event = EVT_START;
+			num = 0;
+		}
+		if (_stricmp(_param_ev.c_str(), "END") == 0)//doesnt have time, and no amount
 		{
 			event = EVT_END;
+			num = 0;
 		}
 	}
-
-	
 };
 
 

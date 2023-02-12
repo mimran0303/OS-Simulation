@@ -49,20 +49,6 @@ public:
 		Timer = 0;
 	}
 
-#if HARDCODED
-	Process()
-	{
-		Commands->push_back(new Command(EVT_NCORES, 2));
-		Commands->push_back(new Command(EVT_START, 10));
-		Commands->push_back(new Command(EVT_CPU, 10));
-		Commands->push_back(new Command(EVT_LOCK, 0));
-		Commands->push_back(new Command(EVT_SSD, 20));
-		Commands->push_back(new Command(EVT_OUTPUT, 20));
-		Commands->push_back(new Command(EVT_UNLOCK, 0));
-		Commands->push_back(new Command(EVT_END, 0));
-	}
-#endif
-
 	void DoWork()
 	{
 		if (Current() == NULL)
@@ -70,32 +56,29 @@ public:
 			cout << "WARNING: No command to execute" << endl;
 			return;
 		}
-
-		Status = Running;
-
-		cout << "process do work " << ToString(Current()->event) << endl;
-
 		if (Current()->event == EVT_NCORES)//we need to
 		{
-
+			
 		}
 		else if (Current()->event == EVT_START)
 		{
+			Status = Running;
+			cout << "process do work " << ToString(Current()->event) << endl;
 
 		}
 		else if (Current()->event == EVT_CPU)
 		{
-			ReadyQ.push(Current());
+			ReadyQ.push(Current()); //if there are more processes than CPU
 			cout << "In the Queue we have: " << ToString(ReadyQ.front()->event) << endl;
 		}
 		else if (Current()->event == EVT_LOCK)
 		{
-			LockQ.push(Current());
+			LockQ.push(Current()); //
 			cout << "In the Queue we have: " << ToString(LockQ.front()->event) << endl;
 		}
 		else if (Current()->event == EVT_SSD)
 		{
-			SSDQ.push(Current());
+			SSDQ.push(Current());//if the SSD if occupied 
 			cout << "In the Queue we have: " << ToString(SSDQ.front()->event) << endl;
 		}
 		else if (Current()->event == EVT_UNLOCK)

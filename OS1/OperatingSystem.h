@@ -20,11 +20,13 @@ int ms=0;
 class OperatingSystem
 {
 public: 
+	bool lock = true;
+	bool unlocked = false;
+
 	ReadyQueue *ReadyQ;
 	SSDQueue *SSDQ;
 	LockQueue *LockQ[4];
 	ProcessVector *ProcessList;
-	Hardware* hw = new Hardware();
 
 	int cpu_amount=0;
 	OperatingSystem()
@@ -64,13 +66,6 @@ public:
 			cout << "WARNING: No command to execute" << endl;
 			return;
 		}
-
-		else if (process->Current()->event == EVT_NCORES)//ncores = # of cpu
-		{
-			int existingCpuCount = hw->CPUS->size();
-			int cpu_amount = existingCpuCount- cpu_amount;
-			cout << "number of CPUS are" << cpu_amount << endl;
-		}
 		else if (process ->Current()->event == EVT_START) //new process created after every start
 		{
 			process->Status = Running;
@@ -83,26 +78,25 @@ public:
 			ReadyQ->push(process);
 			ms += ms;
 		}
-		else if (process->Current()->event == EVT_LOCK)//Specified lock, process goes to lock queue
+		else if (process->Current()->event == EVT_LOCK)//lock specified by process is in locked state
 		{
-			process->Status = Waiting;
+			//process->Status = Waiting; //PROCESS DOESNT GO HERE
 			LockQ[0]->push(process);
 		}
 	
-		else if (process->Current()->event == EVT_SSD)//goes to ssd queue
+		else if (process->Current()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
 		{
 			process->Status = Waiting;
 			SSDQ->push(process);
 			ms += ms;
 		}
-		else if (process->Current()->event == EVT_OUTPUT)//goes to user
+		else if (process->Current()->event == EVT_OUTPUT)//goes to user immediately
 		{
-			process->Status = Running;
 			ms += ms;
 		}
-		else if (process->Current()->event == EVT_UNLOCK)//process exits and goes to ready queue
+		else if (process->Current()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
 		{
-			process->Status = Running;
+			//PROCESS DOESNT GO HERE
 		}
 		else if (process->Current()->event == EVT_END)//process terminates
 		{
