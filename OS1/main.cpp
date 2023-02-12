@@ -12,6 +12,7 @@ Command* CreateCommand(string& instruct);
 
 int main()
 {
+	Process* p = NULL;
 	OperatingSystem* os = new OperatingSystem();
 	Hardware* hw = new Hardware;
 
@@ -39,9 +40,8 @@ int main()
 	//
 	while (true)
 	{
-		p->DoWork();
+		os->DoWork();
 		Sleep(1000);
-		
 	}
 }
 

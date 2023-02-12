@@ -40,8 +40,13 @@ public:
 
 		for (int j = 0;j < 4;j++)
 		{
-
 			//LockQ[j]->DoWork();
+		}
+
+		for (int i = 0;i < ProcessList->size();i++)
+		{
+			Process* p = ProcessList->at(i);
+			p->DoWork();
 		}
 	}
 	void Process_Handler(Process* process)
