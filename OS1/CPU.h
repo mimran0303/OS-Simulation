@@ -26,6 +26,9 @@ public:
 			return;
 		}
 
+		if (MyProcess == NULL)
+			return;
+		
 		if (MyProcess->Status == Running)
 		{
 			MyProcess->DoWork();

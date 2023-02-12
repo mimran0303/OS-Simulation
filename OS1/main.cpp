@@ -14,12 +14,12 @@ Command* CreateCommand(string& instruct);
 void ReportSystemStatus();
 
 OperatingSystem* OS = new OperatingSystem();
-Hardware* hw = new Hardware(OS);
+Hardware* HW = new Hardware(OS);
 
 int main()
 {
 	
-	OS->UC = hw->UC; // wire up the system
+	OS->UC = HW->UC; // wire up the system
 
 #if PRODUCTION
 	//
@@ -63,8 +63,8 @@ int main()
 
 	CPU* cpu1 = new CPU(OS->ReadyQ);
 	CPU* cpu2 = new CPU(OS->ReadyQ);
-	hw->CPUS->push_back(cpu1);
-	hw->CPUS->push_back(cpu2);
+	HW->CPUS->push_back(cpu1);
+	HW->CPUS->push_back(cpu2);
 
 	Process* p = new Process();
 	OS->ProcessList->push_back(p);
@@ -86,6 +86,7 @@ int main()
 	while (true)
 	{
 		OS->DoWork();
+		HW->DoWork();
 		ReportSystemStatus();
 		Sleep(1000);
 	}
@@ -127,6 +128,6 @@ void ReportSystemStatus()
 	for (int i = 0; i < OS->ProcessList->size(); i++)
 	{
 		Process* p = OS->ProcessList->at(i);
-		cout << "Process: " << ToString(p->CurrentCommand()->event) << ToString(p->Status) << endl;
+		cout << "Process: " << ToString(p->CurrentCommand()->event) << ", " << ToString(p->Status) << endl;
 	}
 }
