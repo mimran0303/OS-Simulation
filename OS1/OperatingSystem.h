@@ -34,7 +34,9 @@ public:
 
 	void DoWork()
 	{
-		cout << " OS DOING WORK " << endl;
+		//cout << " OS DOING WORK " << endl;
+
+		CleanUp(); //remove terminated processes from process list
 
 		for (int i = 0;i < ProcessList->size();i++)
 		{
@@ -50,19 +52,23 @@ public:
 	void ExecuteNextCommand(Process* process)
 	{
 		process->MoveToNextCommand();
-
+		
 		if (process->CurrentCommand() == NULL)
 		{
 			cout << "WARNING: No command to execute" << endl;
 			return;
 		}
+
+		process->ResetTimer();
+		process->MaxTimer = process->CurrentCommand()->num;
+
 #if PLACEHOLDER_ONLY 
-		else if (process ->CurrentCommand()->event == EVT_START) 
+		if (process ->CurrentCommand()->event == EVT_START) 
 		{
 			// Actual implementation of EVT_START is in main() that creates a new process
 		}
 #endif
-		else if (process->CurrentCommand()->event == EVT_CPU)//process goes to RQ
+		if (process->CurrentCommand()->event == EVT_CPU)//process goes to RQ
 		{
 			ReadyQ->push(process);
 			process->Status = Blocked;
@@ -94,6 +100,21 @@ public:
 		{
 			process->Status = Terminated;
 		}
+	}
+
+	void CleanUp()
+	{
+		vector<Process*>* newList = new vector<Process*>();
+		for (int i = 0; i < ProcessList->size();i++)
+		{
+			Process* p = ProcessList->at(i);
+			if (p->Status != Terminated)
+			{
+				newList->push_back(p);
+			}
+		}
+		delete ProcessList;
+		ProcessList = newList;
 	}
 };
 

@@ -46,7 +46,7 @@ public:
 			MyProcess = NULL;
 		}
 
-		cout << " SSD DOING WORK " << endl;
+		//cout << " SSD DOING WORK " << endl;
 
 	}
 };

@@ -70,11 +70,11 @@ int main()
 	OS->ProcessList->push_back(p);
 
 	p->CommandList->push_back(new Command(EVT_NCORES, 2));
-	p->CommandList->push_back(new Command(EVT_START, 2));
-	p->CommandList->push_back(new Command(EVT_CPU, 2));
+	p->CommandList->push_back(new Command(EVT_START, 5));
+	p->CommandList->push_back(new Command(EVT_CPU, 5));
 	// p->CommandList->push_back(new Command(EVT_LOCK, 0));
-	p->CommandList->push_back(new Command(EVT_SSD, 2));
-	p->CommandList->push_back(new Command(EVT_OUTPUT, 2));
+	p->CommandList->push_back(new Command(EVT_SSD, 5));
+	p->CommandList->push_back(new Command(EVT_OUTPUT, 5));
 	// p->CommandList->push_back(new Command(EVT_UNLOCK, 0));
 	p->CommandList->push_back(new Command(EVT_END));
 
@@ -88,6 +88,8 @@ int main()
 		OS->DoWork();
 		HW->DoWork();
 		ReportSystemStatus();
+		if (OS->ProcessList->size() == 0)
+			break;
 		Sleep(1000);
 	}
 }
@@ -128,6 +130,12 @@ void ReportSystemStatus()
 	for (int i = 0; i < OS->ProcessList->size(); i++)
 	{
 		Process* p = OS->ProcessList->at(i);
-		cout << "Process: " << ToString(p->CurrentCommand()->event) << ", " << ToString(p->Status) << endl;
+		cout << "Process - "
+			<< "Command: " << ToString(p->CurrentCommand()->event) << ", "
+			<< "Status: " << ToString(p->Status) << ", "
+			<< "Timer: " << p->Timer << ", "
+			<< "Total Time: " << p->TotalTime << ", "
+			<< endl;
 	}
+	cout << "---------------" << endl;
 }

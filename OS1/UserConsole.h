@@ -14,7 +14,7 @@ public:
 	}
 	void DoWork()
 	{
-		cout << " USER DOING WORK " << endl;
+		//cout << " USER CONSOLE DOING WORK " << endl;
 		for (int i = 0;i < ProcessList->size();i++)
 		{
 			Process* p = ProcessList->at(i);

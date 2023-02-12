@@ -35,7 +35,7 @@ public:
 
 	void DoWork()
 	{
-		cout << "Hardware doing work " << endl;
+		//cout << "Hardware doing work " << endl;
 
 		for (int i = 0;i < CPUS->size();i++)
 		{

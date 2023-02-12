@@ -65,10 +65,10 @@ public:
 	void SetTimer(long max)
 	{
 		MaxTimer = max;
-		Reset();
+		ResetTimer();
 	}
 
-	void Reset()
+	void ResetTimer()
 	{
 		Timer = 0;
 	}

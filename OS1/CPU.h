@@ -40,7 +40,7 @@ public:
 			MyProcess = NULL;
 		}
 
-		cout << " CPU DOING WORK " << endl;
+		//cout << " CPU DOING WORK " << endl;
 	}
 };
 
