@@ -4,7 +4,6 @@
 #include <string>
 #include <queue>
 #include <vector>
-
 #include "Command.h"
 
 using namespace std;
@@ -20,9 +19,6 @@ enum Status
 class Process
 {
 public:
-	queue<Command*> ReadyQ;
-	queue<Command*> SSDQ;
-	queue<Command*> LockQ;
 
 	vector<Command*>* CommandList = new vector<Command*>() ;//commands added to
 	int c = 0;

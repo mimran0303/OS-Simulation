@@ -1,10 +1,12 @@
 #include <iostream>
-#include<string>
+#include <string>
+#include "Definition.h"
 #include "TestEnum.h"
-#include"Event.h"
+#include "Event.h"
 #include "TestProcess.h"
-#include"Hardware.h"
-#include"OperatingSystem.h"
+#include "Hardware.h"
+#include "OperatingSystem.h"
+#include "CPU.h"
 
 using namespace std;
 
@@ -13,8 +15,8 @@ Command* CreateCommand(string& instruct);
 int main()
 {
 	
-	OperatingSystem* os = new OperatingSystem();
-	Hardware* hw = new Hardware();
+	OperatingSystem* OS = new OperatingSystem();
+	Hardware* hw = new Hardware(OS);
 	Process* p = NULL;
 
 #if !PRODUCTION
@@ -38,7 +40,7 @@ int main()
 
 			for (int i = 0;i < cpu_amount;i++)
 			{
-				CPU* cpu = new CPU;
+				CPU* cpu = new CPU(OS->ReadyQ);
 				hw->CPUS->push_back(cpu);//not sure how to say push NCORES
 			}
 			continue;
@@ -47,7 +49,7 @@ int main()
 		if (cmd->event == EVT_START)//this signifies new process but 1st line is always START 
 		{
 			p = new Process;
-			os->ProcessList->push_back(p);
+			OS->ProcessList->push_back(p);
 		}
 
 		p->CommandList->push_back(cmd); //line only work if very first command is START
@@ -78,7 +80,7 @@ int main()
 	//
 	while (true)
 	{
-		os->DoWork();
+		OS->DoWork();
 		Sleep(1000);
 	}
 }

@@ -1,52 +1,54 @@
 #pragma once
 
+#include "Definition.h"
 #include "Command.h"
 #include "SSD.h"
 #include "CPU.h"
 #include "LOCK.h"
 #include "UserConsole.h"
+#include "OperatingSystem.h"
 
-const static int LOCK_COUNT = 2;
+extern const int LOCK_COUNT;
+
 typedef vector<CPU*> CPUVector;
 
 class Hardware
 {
 public:
 
+	CPUVector* CPUS;
 	SSD *Ssd;
-	CPU *Cpu;
 	UserConsole *UC;
 	Lock *Locks[LOCK_COUNT];
-	CPUVector *CPUS;
 
-	Hardware()
+	Hardware(OperatingSystem* os)
 	{
 		CPUS = new CPUVector;
-		Ssd = new SSD();
-		Cpu = new CPU();
+		Ssd = new SSD(os->SSDQ);
 		UC = new UserConsole();
 
 		for (int j = 0;j < LOCK_COUNT;j++)
 		{
-			Locks[j] = new Lock();
+			Locks[j] = new Lock(os->LockQ[j]);
 		}
 	}
 
 	void DoWork()
 	{
-		cout << " HARDWARE DOING WORK " << endl;
+		cout << "Hardware doing work " << endl;
+
+		for (int i = 0;i < CPUS->size();i++)
+		{
+			CPU* cpu = CPUS->at(i);
+			cpu->DoWork();
+		}
+
 		Ssd->DoWork();
-		Cpu->DoWork();
 		UC->DoWork();
 
 		for (int j = 0;j < LOCK_COUNT;j++)
 		{
 			Locks[j]->DoWork();
-		}
-		for (int i = 0;i < CPUS->size();i++)
-		{
-			CPU* cpu = CPUS->at(i);
-			cpu->DoWork();
 		}
 	}
 };

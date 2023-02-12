@@ -56,6 +56,9 @@
     <ClInclude Include="TestEnum.h">
       <Filter>Test</Filter>
     </ClInclude>
+    <ClInclude Include="Definition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />

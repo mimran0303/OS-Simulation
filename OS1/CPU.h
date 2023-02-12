@@ -1,17 +1,23 @@
 #pragma once
 
+#include "Definition.h"
 #include "Command.h"
+#include "Process.h"
 
 class CPU
 {
-public:
+private:
+	ReadyQueue* Queue;
 
-	//Command* comm = new Command();
+public:
+	CPU(ReadyQueue* queue)
+	{
+		Queue = queue;
+	}
+
 	void DoWork()
 	{
 		cout << " CPU DOING WORK " << endl;
-		//number with NCORES input = how many CPUs need to be generated
-
 	}
 };
 

@@ -8,15 +8,6 @@
 
 using namespace std;
 
-typedef queue<Process*> LockQueue;
-typedef queue<Process*> ReadyQueue;
-typedef queue<Process*> SSDQueue;
-typedef vector<Process*> ProcessVector;
-
-extern const int LOCK_COUNT;
-
-
-
 class OperatingSystem
 {
 public: 
@@ -24,7 +15,7 @@ public:
 
 	ReadyQueue *ReadyQ;
 	SSDQueue *SSDQ;
-	LockQueue *LockQ[4];
+	LockQueue *LockQ[LOCK_COUNT];
 	ProcessVector *ProcessList;
 
 	int cpu_amount=0;
@@ -34,7 +25,7 @@ public:
 		ReadyQ = new ReadyQueue();
 		SSDQ = new SSDQueue();
 
-		for (int j = 0;j < 4;j++)
+		for (int j = 0;j < LOCK_COUNT;j++)
 		{
 			LockQ[j] = new LockQueue();
 		}
@@ -54,6 +45,8 @@ public:
 		{
 			//LockQ[j]->DoWork();
 		}
+
+
 	}
 
 	void ExecuteCommand(Process* process)
@@ -74,6 +67,12 @@ public:
 			ReadyQ->push(process);
 			cout << "Process added to ReadyQ" << endl;
 		}
+		else if (process->Current()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
+		{
+			process->Status = Waiting;
+			SSDQ->push(process);
+			cout << "Process added to SSDQ" << endl;
+		}
 		else if (process->Current()->event == EVT_LOCK)//lock specified by process is in locked state
 		{
 			process->Status = Waiting; //PROCESS DOESNT GO HERE
@@ -84,12 +83,6 @@ public:
 		{
 			//PROCESS DOESNT GO HERE
 			//we will dequeue if necessary
-		}
-		else if (process->Current()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
-		{
-			process->Status = Waiting;
-			SSDQ->push(process);
-			cout << "Process added to SSDQ" << endl;
 		}
 		else if (process->Current()->event == EVT_OUTPUT)//goes to user immediately
 		{
