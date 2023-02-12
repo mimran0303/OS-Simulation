@@ -24,12 +24,18 @@ public:
 		num = 0;
 	};
 
+	Command(Event _event)
+	{
+		event = _event;
+		num = 0;
+	}
+
 	Command(Event _event, int _time)
 	{
 		event = _event;
 		num = _time;
 	};
-
+	
 	Command(string _param_ev /* CPU */, int _param_time)
 	{
 		num = _param_time;

@@ -11,7 +11,7 @@
 using namespace std;
 
 Command* CreateCommand(string& instruct);
-void PrintSyatemStatus();
+void ReportSystemStatus();
 
 OperatingSystem* OS = new OperatingSystem();
 Hardware* hw = new Hardware(OS);
@@ -70,13 +70,13 @@ int main()
 	OS->ProcessList->push_back(p);
 
 	p->CommandList->push_back(new Command(EVT_NCORES, 2));
-	p->CommandList->push_back(new Command(EVT_START, 10));
-	p->CommandList->push_back(new Command(EVT_CPU, 10));
+	p->CommandList->push_back(new Command(EVT_START, 2));
+	p->CommandList->push_back(new Command(EVT_CPU, 2));
 	// p->CommandList->push_back(new Command(EVT_LOCK, 0));
-	p->CommandList->push_back(new Command(EVT_SSD, 20));
-	p->CommandList->push_back(new Command(EVT_OUTPUT, 20));
+	p->CommandList->push_back(new Command(EVT_SSD, 2));
+	p->CommandList->push_back(new Command(EVT_OUTPUT, 2));
 	// p->CommandList->push_back(new Command(EVT_UNLOCK, 0));
-	p->CommandList->push_back(new Command(EVT_END, 0));
+	p->CommandList->push_back(new Command(EVT_END));
 
 #endif
 
@@ -86,6 +86,7 @@ int main()
 	while (true)
 	{
 		OS->DoWork();
+		ReportSystemStatus();
 		Sleep(1000);
 	}
 }
@@ -120,8 +121,9 @@ Command* CreateCommand(string& instruct) //input originally char instruct[]
 	}
 }
 
-void PrintSyatemStatus()
+void ReportSystemStatus()
 { 
+	cout << "---------------" << endl;
 	for (int i = 0; i < OS->ProcessList->size(); i++)
 	{
 		Process* p = OS->ProcessList->at(i);
