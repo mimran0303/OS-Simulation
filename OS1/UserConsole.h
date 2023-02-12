@@ -6,7 +6,7 @@
 class UserConsole
 {
 public:
-	vector<Process*> *ProcessList;
+	vector<Process*>* ProcessList;
 
 	UserConsole()
 	{
@@ -15,6 +15,42 @@ public:
 	void DoWork()
 	{
 		cout << " USER DOING WORK " << endl;
+		for (int i = 0;i < ProcessList->size();i++)
+		{
+			Process* p = ProcessList->at(i);
+			SingleProcessDoWork(p);
+		}
+
+		CleanUp();
+	}
+	void SingleProcessDoWork(Process* myprocess)
+	{
+		if (myprocess == NULL)
+			return;
+
+		myprocess->Status = Running;
+		myprocess->DoWork();
+
+		if (myprocess->IsTimerExpired())
+		{
+			myprocess->Status = Ready;
+		}
+	}
+
+	void CleanUp()
+	{
+		vector<Process*>* newList = new vector<Process*>();
+		for (int i = 0; i < ProcessList->size();i++)
+		{
+			Process* p = ProcessList->at(i);
+			if (p->Status != Ready)
+			{
+				newList->push_back(p);
+			}
+		}
+
+		delete ProcessList;
+		ProcessList = newList;
 	}
 };
 

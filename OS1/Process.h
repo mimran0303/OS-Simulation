@@ -16,6 +16,21 @@ enum Status
 	Terminated // Program finsihed nothing to run
 };
 
+string ToString(Status s)
+{
+	switch (s)
+	{
+	case Ready:
+		return "Ready";
+	case Blocked:
+		return "Blocked";
+	case Running:
+		return "Running";
+	case Terminated:
+		return "Terminated";
+	}
+}
+
 class Process
 {
 public:

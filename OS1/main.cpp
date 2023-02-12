@@ -11,18 +11,22 @@
 using namespace std;
 
 Command* CreateCommand(string& instruct);
+void PrintSyatemStatus();
+
+OperatingSystem* OS = new OperatingSystem();
+Hardware* hw = new Hardware(OS);
 
 int main()
 {
 	
-	OperatingSystem* OS = new OperatingSystem();
-	Hardware* hw = new Hardware(OS);
-	Process* p = NULL;
+	OS->UC = hw->UC; // wire up the system
 
-#if !PRODUCTION
+#if PRODUCTION
 	//
 	// Stage 1: Create Processes
 	//
+	Process* p = NULL;
+
 	while (true)
 	{
 		string line;
@@ -57,20 +61,21 @@ int main()
 
 #else
 
-	CPU* cpu1 = new CPU;
-	CPU* cpu2 = new CPU;
+	CPU* cpu1 = new CPU(OS->ReadyQ);
+	CPU* cpu2 = new CPU(OS->ReadyQ);
 	hw->CPUS->push_back(cpu1);
 	hw->CPUS->push_back(cpu2);
 
-	p = new Process();
-	os->ProcessList->push_back(p);
+	Process* p = new Process();
+	OS->ProcessList->push_back(p);
+
 	p->CommandList->push_back(new Command(EVT_NCORES, 2));
 	p->CommandList->push_back(new Command(EVT_START, 10));
 	p->CommandList->push_back(new Command(EVT_CPU, 10));
-	p->CommandList->push_back(new Command(EVT_LOCK, 0));
+	// p->CommandList->push_back(new Command(EVT_LOCK, 0));
 	p->CommandList->push_back(new Command(EVT_SSD, 20));
 	p->CommandList->push_back(new Command(EVT_OUTPUT, 20));
-	p->CommandList->push_back(new Command(EVT_UNLOCK, 0));
+	// p->CommandList->push_back(new Command(EVT_UNLOCK, 0));
 	p->CommandList->push_back(new Command(EVT_END, 0));
 
 #endif
@@ -115,3 +120,11 @@ Command* CreateCommand(string& instruct) //input originally char instruct[]
 	}
 }
 
+void PrintSyatemStatus()
+{ 
+	for (int i = 0; i < OS->ProcessList->size(); i++)
+	{
+		Process* p = OS->ProcessList->at(i);
+		cout << "Process: " << ToString(p->CurrentCommand()->event) << ToString(p->Status) << endl;
+	}
+}

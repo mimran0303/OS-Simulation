@@ -8,6 +8,7 @@ class CPU
 {
 private:
 	ReadyQueue* Queue;
+	Process* MyProcess = NULL;
 
 public:
 	CPU(ReadyQueue* queue)
@@ -17,6 +18,25 @@ public:
 
 	void DoWork()
 	{
+		if (MyProcess == NULL && Queue->size() >= 1)
+		{
+			MyProcess = Queue->front();
+			Queue->pop();
+			MyProcess->Status = Running;
+			return;
+		}
+
+		if (MyProcess->Status == Running)
+		{
+			MyProcess->DoWork();
+		}
+
+		if (MyProcess->IsTimerExpired())
+		{
+			MyProcess->Status = Ready;
+			MyProcess = NULL;
+		}
+
 		cout << " CPU DOING WORK " << endl;
 	}
 };

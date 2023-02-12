@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<queue>
+#include "UserConsole.h"
 #include"Process.h"
 #include"Command.h"
 #include"Hardware.h"
@@ -12,7 +13,7 @@ class OperatingSystem
 {
 public: 
 	
-
+	UserConsole* UC;
 	ReadyQueue *ReadyQ;
 	SSDQueue *SSDQ;
 	LockQueue *LockQ[LOCK_COUNT];
@@ -86,13 +87,13 @@ public:
 		}
 		else if (process->CurrentCommand()->event == EVT_OUTPUT)//goes to user immediately
 		{
+			UC->ProcessList->push_back(process);
+			process->Status = Running;
 		}
-		
 		else if (process->CurrentCommand()->event == EVT_END)//process terminates
 		{
 			process->Status = Terminated;
 		}
-
 	}
 };
 
