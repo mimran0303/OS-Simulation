@@ -6,6 +6,9 @@
 #include "LOCK.h"
 #include "UserConsole.h"
 
+const static int LOCK_COUNT = 2;
+typedef vector<CPU*> CPUVector;
+
 class Hardware
 {
 public:
@@ -13,19 +16,22 @@ public:
 	SSD *Ssd;
 	CPU *Cpu;
 	UserConsole *UC;
-	Lock *lock[4];
+	Lock *lock[LOCK_COUNT];
+	CPUVector *CPUS;
 
 	Hardware()
 	{
+		CPUS = new CPUVector;
 		Ssd = new SSD();
 		Cpu = new CPU();
 		UC = new UserConsole();
 
-		for (int j = 0;j < 4;j++)
+		for (int j = 0;j < LOCK_COUNT;j++)
 		{
 			lock[j] = new Lock();
 		}
 	}
+
 	void DoWork()
 	{
 		cout << " HARDWARE DOING WORK " << endl;
@@ -33,9 +39,14 @@ public:
 		Cpu->DoWork();
 		UC->DoWork();
 
-		for (int j = 0;j < 4;j++)
+		for (int j = 0;j < LOCK_COUNT;j++)
 		{
 			lock[j]->DoWork();
+		}
+		for (int i = 0;i < CPUS->size();i++)
+		{
+			CPU* cpu = CPUS->at(i);
+			cpu->DoWork();
 		}
 	}
 };

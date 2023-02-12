@@ -114,7 +114,7 @@ public:
 	{
 		for (auto c : *CommandList)
 		{
-			cout << "event:" << c->event << " time:" << c->time << endl;
+			cout << "event:" << c->event << " time:" << c->num << endl;
 		}
 	}
 };

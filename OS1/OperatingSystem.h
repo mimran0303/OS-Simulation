@@ -4,6 +4,7 @@
 #include<queue>
 #include"Process.h"
 #include"Command.h"
+#include"Hardware.h"
 
 using namespace std;
 
@@ -12,7 +13,10 @@ typedef queue<Process*> ReadyQueue;
 typedef queue<Process*> SSDQueue;
 typedef vector<Process*> ProcessVector;
 
+extern const int LOCK_COUNT;
+
 int ms=0;
+
 class OperatingSystem
 {
 public: 
@@ -20,6 +24,9 @@ public:
 	SSDQueue *SSDQ;
 	LockQueue *LockQ[4];
 	ProcessVector *ProcessList;
+	Hardware* hw = new Hardware();
+
+	int cpu_amount=0;
 	OperatingSystem()
 	{		
 		ProcessList = new ProcessVector;
@@ -38,7 +45,7 @@ public:
 		// ReadyQ->DoWork();
 		// SSDQ->DoWork();
 
-		for (int j = 0;j < 4;j++)
+		for (int j = 0;j < LOCK_COUNT; j++)
 		{
 			//LockQ[j]->DoWork();
 		}
@@ -49,6 +56,7 @@ public:
 			p->DoWork();
 		}
 	}
+
 	void Process_Handler(Process* process)
 	{
 		if (process->Current() == NULL)
@@ -59,7 +67,9 @@ public:
 
 		else if (process->Current()->event == EVT_NCORES)//ncores = # of cpu
 		{
-
+			int existingCpuCount = hw->CPUS->size();
+			int cpu_amount = existingCpuCount- cpu_amount;
+			cout << "number of CPUS are" << cpu_amount << endl;
 		}
 		else if (process ->Current()->event == EVT_START) //new process created after every start
 		{
@@ -68,6 +78,7 @@ public:
 		}
 		else if (process->Current()->event == EVT_CPU)//process goes to RQ
 		{
+		
 			process->Status = Waiting;
 			ReadyQ->push(process);
 			ms += ms;
@@ -86,18 +97,18 @@ public:
 		}
 		else if (process->Current()->event == EVT_OUTPUT)//goes to user
 		{
+			process->Status = Running;
 			ms += ms;
 		}
 		else if (process->Current()->event == EVT_UNLOCK)//process exits and goes to ready queue
 		{
-
+			process->Status = Running;
 		}
 		else if (process->Current()->event == EVT_END)//process terminates
 		{
 			process->Status = Terminate;
 		}
-		
-		
+
 	}
 };
 

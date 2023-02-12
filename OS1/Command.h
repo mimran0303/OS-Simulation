@@ -11,7 +11,7 @@ public:
 
 	// Event and Time are required values for object
 	Event event;
-	int time;
+	int num;
 
 	// Following can be manipulated or changes later
 	int i;
@@ -21,18 +21,18 @@ public:
 	Command()
 	{
 		event = EVT_START;
-		time = 0;
+		num = 0;
 	};
 
 	Command(Event _event, int _time)
 	{
 		event = _event;
-		time = _time;
+		num = _time;
 	};
 
 	Command(string _param_ev /* CPU */, int _param_time)
 	{
-		time = _param_time;
+		num = _param_time;
 
 		if (_stricmp(_param_ev.c_str(), "START")==0) //adds to global time
 		{

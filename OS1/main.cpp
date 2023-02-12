@@ -12,9 +12,10 @@ Command* CreateCommand(string& instruct);
 
 int main()
 {
+	
 	Process* p = NULL;
 	OperatingSystem* os = new OperatingSystem();
-	Hardware* hw = new Hardware;
+	Hardware* hw = new Hardware();
 
 	//
 	// Stage 1: Create Processes
@@ -27,12 +28,24 @@ int main()
 		if (line.empty())
 			break;
 		Command* cmd = CreateCommand(line);
-		if (cmd->event == EVT_START)
+
+		if (cmd->event == EVT_NCORES)
+		{
+			for (int i=0;i<cmd->num;i++)
+			{
+				CPU* cpu = new CPU;
+				hw->CPUS->push_back(cpu);//not sure how to say push NCORES
+			}
+			continue;
+		}
+		
+		if (cmd->event == EVT_START)//this signifies new process but 1st line is always START 
 		{
 			p = new Process;
 			os->ProcessList->push_back(p);
 		}
-		p->CommandList->push_back(cmd);
+
+		p->CommandList->push_back(cmd); //line only work if very first command is START
 	}
 
 	//
