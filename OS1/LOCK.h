@@ -27,10 +27,10 @@ public:
 				BringProcessFromQueueAndLockIt();
 		}
 
-		if (MyProcess->CurrentCommand()->event == EVT_UNLOCK)
+		/*if (MyProcess->CurrentCommand()->event == EVT_UNLOCK)
 		{
 			Unlock();
-		}
+		}*/
 
 		//cout << "Lock Status: " << IsLockActive() << endl;
 	}

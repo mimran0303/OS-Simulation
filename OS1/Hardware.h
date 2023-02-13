@@ -6,7 +6,6 @@
 #include "CPU.h"
 #include "LOCK.h"
 #include "UserConsole.h"
-#include "OperatingSystem.h"
 
 extern const int LOCK_COUNT; //here we say that there are 64 locks (0-63)
 
@@ -21,15 +20,19 @@ public:
 	UserConsole *UC;
 	Lock *Locks[LOCK_COUNT];
 
-	Hardware(OperatingSystem* os)
+	Hardware()
+	{
+	}
+
+	void Initialize(SSDQueue* SSDQ, LockQueue* lockQs[])
 	{
 		CPUS = new CPUVector;
-		Ssd = new SSD(os->SSDQ);
+		Ssd = new SSD(SSDQ);
 		UC = new UserConsole();
 
 		for (int j = 0;j < LOCK_COUNT;j++)
 		{
-			Locks[j] = new Lock(os->LockQ[j]);
+			Locks[j] = new Lock(lockQs[j]);
 		}
 	}
 

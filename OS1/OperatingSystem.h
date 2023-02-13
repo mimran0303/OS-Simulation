@@ -13,15 +13,16 @@ class OperatingSystem
 {
 public: 
 	
-	UserConsole* UC;
+	Hardware* HW;
 	ReadyQueue *ReadyQ;
 	SSDQueue *SSDQ;
 	LockQueue *LockQ[LOCK_COUNT];
 	ProcessVector *ProcessList;
 
 	int cpu_amount=0;
-	OperatingSystem()
+	OperatingSystem(Hardware* _hw)
 	{		
+		HW = _hw;
 		ProcessList = new ProcessVector;
 		ReadyQ = new ReadyQueue();
 		SSDQ = new SSDQueue();
@@ -89,12 +90,12 @@ public:
 		}	
 		else if (process->CurrentCommand()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
 		{
-			//PROCESS DOESNT GO HERE
-			//we will dequeue if necessary
+			int num = process->CurrentCommand()->num;
+			HW->Locks[num]->Unlock();
 		}
 		else if (process->CurrentCommand()->event == EVT_OUTPUT)//goes to user immediately
 		{
-			UC->ProcessList->push_back(process);
+			HW->UC->ProcessList->push_back(process);
 			process->Status = Running;
 		}
 		else if (process->CurrentCommand()->event == EVT_END)//process terminates

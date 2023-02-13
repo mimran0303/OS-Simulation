@@ -13,15 +13,14 @@ using namespace std;
 Command* CreateCommand(string& instruct);
 void ReportSystemStatus();
 
-OperatingSystem* OS = new OperatingSystem();
-Hardware* HW = new Hardware(OS);
+Hardware* HW = new Hardware();
+OperatingSystem* OS = new OperatingSystem(HW);
 
 int main()
 {
-	
-	OS->UC = HW->UC; // wire up the system
+	HW->Initialize(OS->SSDQ, OS->LockQ);
 
-#if PRODUCTION
+#if !PRODUCTION
 	//
 	// Stage 1: Create Processes
 	//
@@ -38,14 +37,14 @@ int main()
 		
 		if (cmd->event == EVT_NCORES)//ncores = # of cpu
 		{
-			int existingCpuCount = hw->CPUS->size();
+			int existingCpuCount = HW->CPUS->size();
 			int cpu_amount = cmd->num - existingCpuCount;
 			cout << "number of CPUS are" << cpu_amount << endl;
 
 			for (int i = 0;i < cpu_amount;i++)
 			{
 				CPU* cpu = new CPU(OS->ReadyQ);
-				hw->CPUS->push_back(cpu);//not sure how to say push NCORES
+				HW->CPUS->push_back(cpu);//not sure how to say push NCORES
 			}
 			continue;
 		}
