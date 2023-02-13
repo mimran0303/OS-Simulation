@@ -82,7 +82,8 @@ public:
 		}
 		else if (process->CurrentCommand()->event == EVT_LOCK)//lock specified by process is in locked state
 		{
-			LockQ[0]->push(process);
+			int num = process->CurrentCommand()->num;
+			LockQ[num]->push(process);
 			process->Status = Blocked; 
 			cout << "Process added to LockQ " << endl;
 		}	

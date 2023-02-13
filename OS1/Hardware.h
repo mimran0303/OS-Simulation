@@ -8,7 +8,7 @@
 #include "UserConsole.h"
 #include "OperatingSystem.h"
 
-extern const int LOCK_COUNT;
+extern const int LOCK_COUNT; //here we say that there are 64 locks (0-63)
 
 typedef vector<CPU*> CPUVector;
 
@@ -46,7 +46,7 @@ public:
 		Ssd->DoWork();
 		UC->DoWork();
 
-		for (int j = 0;j < LOCK_COUNT;j++)
+		for (int j = 0;j < LOCK_COUNT;j++) //loop here locates the specified
 		{
 			Locks[j]->DoWork();
 		}

@@ -72,10 +72,10 @@ int main()
 	p->CommandList->push_back(new Command(EVT_NCORES, 2));
 	p->CommandList->push_back(new Command(EVT_START, 5));
 	p->CommandList->push_back(new Command(EVT_CPU, 5));
-	// p->CommandList->push_back(new Command(EVT_LOCK, 0));
+	p->CommandList->push_back(new Command(EVT_LOCK, 0));
 	p->CommandList->push_back(new Command(EVT_SSD, 5));
 	p->CommandList->push_back(new Command(EVT_OUTPUT, 5));
-	// p->CommandList->push_back(new Command(EVT_UNLOCK, 0));
+	p->CommandList->push_back(new Command(EVT_UNLOCK, 0));
 	p->CommandList->push_back(new Command(EVT_END));
 
 #endif
