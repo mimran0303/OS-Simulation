@@ -72,11 +72,15 @@ int main()
 
 	p->CommandList->push_back(new Command(EVT_NCORES, 2));
 	p->CommandList->push_back(new Command(EVT_START, 5));
-	p->CommandList->push_back(new Command(EVT_CPU, 5));
+	p->CommandList->push_back(new Command(EVT_CPU, 1));
 	p->CommandList->push_back(new Command(EVT_LOCK, 0));
+	p->CommandList->push_back(new Command(EVT_CPU, 1));
 	p->CommandList->push_back(new Command(EVT_SSD, 5));
+	p->CommandList->push_back(new Command(EVT_CPU, 1));
 	p->CommandList->push_back(new Command(EVT_OUTPUT, 5));
+	p->CommandList->push_back(new Command(EVT_CPU, 1));
 	p->CommandList->push_back(new Command(EVT_UNLOCK, 0));
+	p->CommandList->push_back(new Command(EVT_CPU, 1));
 	p->CommandList->push_back(new Command(EVT_END));
 
 #endif
@@ -127,16 +131,18 @@ Command* CreateCommand(string& instruct) //input originally char instruct[]
 
 void ReportSystemStatus()
 { 
-	cout << "---------------" << endl;
 	for (int i = 0; i < OS->ProcessList->size(); i++)
 	{
 		Process* p = OS->ProcessList->at(i);
-		cout << "Process: "<<p->Pid<< ", "
-			<< "Command: " << ToString(p->CurrentCommand()->event) << ", "
-			<< "Status: " << ToString(p->Status) << ", "
-			<< "Timer: " << p->Timer << ", "
-			<< "Total Time: " << p->TotalTime << ", "
-			<< endl;
+		if (p->Report)
+		{
+			cout << "Process: " << p->Pid << ", "
+				<< "Command: " << ToString(p->CurrentCommand()->event) << ", "
+				<< "Status: " << ToString(p->Status) << ", "
+				<< "Timer: " << p->Timer << ", "
+				<< "Total Time: " << p->TotalTime << ", "
+				<< endl;
+			p->Report = false;
+		}
 	}
-	cout << "---------------" << endl;
 }

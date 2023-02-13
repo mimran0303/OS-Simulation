@@ -45,12 +45,13 @@ public:
 
 			if (p->Status==Ready)
 			{
-				ExecuteNextCommand(p);
+				ScheduleNextCommand(p);
+				p->Report = true;
 			}
 		}
 	}
 
-	void ExecuteNextCommand(Process* process)
+	void ScheduleNextCommand(Process* process)
 	{
 		process->MoveToNextCommand();
 		

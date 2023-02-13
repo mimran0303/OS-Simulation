@@ -47,6 +47,8 @@ public:
 
 	Status Status = Ready;
 
+	bool Report = false;
+
 	Process(int pid)
 	{
 		Pid = pid;

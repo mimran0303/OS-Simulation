@@ -42,6 +42,7 @@ public:
 		MyProcess = Queue->front();
 		Queue->pop();
 		MyProcess->Status = Ready;
+		MyProcess->Report = true;
 	}
 
 	void Unlock()//will be unlocked by process that locked in first place
@@ -49,6 +50,7 @@ public:
 		if (IsUnLocked())
 			return;
 		MyProcess->Status = Ready;
+		MyProcess->Report = true;
 		MyProcess = NULL;
 	}
 };

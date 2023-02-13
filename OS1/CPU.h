@@ -37,6 +37,7 @@ public:
 		if (MyProcess->IsTimerExpired())
 		{
 			MyProcess->Status = Ready;
+			MyProcess->Report = true;
 			MyProcess = NULL;
 		}
 
