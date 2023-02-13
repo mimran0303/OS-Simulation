@@ -9,7 +9,7 @@
 
 int test_process()
 {
-	Process* p1 = new Process();
+	Process* p1 = new Process(0);
 	//p1->DoWork();
 	while (true)
 	{

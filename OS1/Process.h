@@ -35,6 +35,8 @@ class Process
 {
 public:
 
+	int Pid;
+
 	vector<Command*>* CommandList = new vector<Command*>() ;//commands added to
 	int c = 0;
 	int amount;
@@ -44,6 +46,12 @@ public:
 	long TotalTime = 0;
 
 	Status Status = Ready;
+
+	Process(int pid)
+	{
+		Pid = pid;
+	}
+
 	Command* CurrentCommand()
 	{
 		if (c >= 0 && c < CommandList->size())

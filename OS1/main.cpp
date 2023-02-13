@@ -25,6 +25,7 @@ int main()
 	// Stage 1: Create Processes
 	//
 	Process* p = NULL;
+	int NextPid = rand();
 
 	while (true)
 	{
@@ -51,8 +52,9 @@ int main()
 
 		if (cmd->event == EVT_START)//this signifies new process but 1st line is always START 
 		{
-			p = new Process;
+			p = new Process(NextPid);
 			OS->ProcessList->push_back(p);
+			NextPid = rand();
 		}
 
 		p->CommandList->push_back(cmd); //line only work if very first command is START
@@ -65,7 +67,7 @@ int main()
 	HW->CPUS->push_back(cpu1);
 	HW->CPUS->push_back(cpu2);
 
-	Process* p = new Process();
+	Process* p = new Process(rand());
 	OS->ProcessList->push_back(p);
 
 	p->CommandList->push_back(new Command(EVT_NCORES, 2));
@@ -129,7 +131,7 @@ void ReportSystemStatus()
 	for (int i = 0; i < OS->ProcessList->size(); i++)
 	{
 		Process* p = OS->ProcessList->at(i);
-		cout << "Process - "
+		cout << "Process: "<<p->Pid<< ", "
 			<< "Command: " << ToString(p->CurrentCommand()->event) << ", "
 			<< "Status: " << ToString(p->Status) << ", "
 			<< "Timer: " << p->Timer << ", "
