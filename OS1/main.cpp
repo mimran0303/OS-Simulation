@@ -20,7 +20,7 @@ int main()
 {
 	HW->Initialize(OS->SSDQ, OS->LockQ);
 
-#if !PRODUCTION
+#if PRODUCTION
 	//
 	// Stage 1: Create Processes
 	//

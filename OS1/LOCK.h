@@ -19,18 +19,10 @@ public:
 
 	void DoWork() //we want this to simply say whether this lock/queue is in an unlocked or locked state
 	{
-		if (MyProcess->CurrentCommand()->event == EVT_LOCK)
-		{
-			if (IsLockActive())
-				return; //do nothing and leave the method
-			else if(!Queue->empty())
-				BringProcessFromQueueAndLockIt();
-		}
-
-		/*if (MyProcess->CurrentCommand()->event == EVT_UNLOCK)
-		{
-			Unlock();
-		}*/
+		if (IsLockActive())
+			return; //do nothing and leave the method
+		else if (!Queue->empty())
+			BringProcessFromQueueAndLockIt();
 
 		//cout << "Lock Status: " << IsLockActive() << endl;
 	}
@@ -49,7 +41,7 @@ public:
 	{
 		MyProcess = Queue->front();
 		Queue->pop();
-		MyProcess->Status = Running;
+		MyProcess->Status = Ready;
 	}
 
 	void Unlock()//will be unlocked by process that locked in first place
