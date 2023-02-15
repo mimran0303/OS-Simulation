@@ -98,3 +98,16 @@ public:
 	}
 };
 
+void ReportProcessStatus(Process* p, bool force = false)
+{
+	if (p->Report || force)
+	{
+		cout << "Process: " << p->Pid << ", "
+			<< "Command: " << ToString(p->CurrentCommand()->event) << ", "
+			<< "Status: " << ToString(p->Status) << ", "
+			<< "Timer: " << p->Timer << ", "
+			<< "Total Time: " << p->TotalTime << ", "
+			<< endl;
+		p->Report = false;
+	}
+}

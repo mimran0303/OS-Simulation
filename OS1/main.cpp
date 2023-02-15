@@ -1,3 +1,11 @@
+/*
+* 
+* Student: Mariam Imran
+* COSC 3360 Section 6310, Professor Paris
+* Due Feb 22, 2023
+* 
+*/
+
 #include <iostream>
 #include <string>
 #include "Definition.h"
@@ -11,10 +19,11 @@
 using namespace std;
 
 Command* CreateCommand(string& instruct);
-void ReportSystemStatus();
+void ReportSystemStatus(OperatingSystem* OS);
 
 Hardware* HW = new Hardware();
 OperatingSystem* OS = new OperatingSystem(HW);
+
 
 int main()
 {
@@ -25,7 +34,7 @@ int main()
 	// Stage 1: Create Processes
 	//
 	Process* p = NULL;
-	int NextPid = rand();
+	int pid = 500;
 
 	while (true)
 	{
@@ -52,12 +61,15 @@ int main()
 
 		if (cmd->event == EVT_START)//this signifies new process but 1st line is always START 
 		{
-			p = new Process(NextPid);
+			p = new Process(pid++);
+			p->SetTimer(cmd->num);
 			OS->ProcessList->push_back(p);
-			NextPid = rand();
 		}
 
-		p->CommandList->push_back(cmd); //line only work if very first command is START
+		if (p != NULL)
+			p->CommandList->push_back(cmd); //line only work if very first command is START
+		else
+			cout << "Error: No [Start] command defined to create a process " << endl;
 	}
 
 #else
@@ -67,21 +79,33 @@ int main()
 	HW->CPUS->push_back(cpu1);
 	HW->CPUS->push_back(cpu2);
 
-	Process* p = new Process(rand());
-	OS->ProcessList->push_back(p);
+	//if process 1 ends before process 2 the program stops running
+	//we dont want rand() anymore instead we want to start from 0 and increment
+	//multiple processes cannot be run at once
+	int pid = 100;
+	Process* p0 = new Process(pid++);
+	OS->ProcessList->push_back(p0);						
+	p0->CommandList->push_back(new Command(EVT_START, 1));
+	p0->SetTimer(1);
+	p0->CommandList->push_back(new Command(EVT_CPU, 5));
+	p0->CommandList->push_back(new Command(EVT_SSD, 5));
+	p0->CommandList->push_back(new Command(EVT_CPU, 1));
+	p0->CommandList->push_back(new Command(EVT_END));
 
-	p->CommandList->push_back(new Command(EVT_NCORES, 2));
-	p->CommandList->push_back(new Command(EVT_START, 5));
-	p->CommandList->push_back(new Command(EVT_CPU, 1));
-	p->CommandList->push_back(new Command(EVT_LOCK, 0));
-	p->CommandList->push_back(new Command(EVT_CPU, 1));
-	p->CommandList->push_back(new Command(EVT_SSD, 5));
-	p->CommandList->push_back(new Command(EVT_CPU, 1));
-	p->CommandList->push_back(new Command(EVT_OUTPUT, 5));
-	p->CommandList->push_back(new Command(EVT_CPU, 1));
-	p->CommandList->push_back(new Command(EVT_UNLOCK, 0));
-	p->CommandList->push_back(new Command(EVT_CPU, 1));
-	p->CommandList->push_back(new Command(EVT_END));
+	Process* p1 = new Process(pid++);
+	OS->ProcessList->push_back(p1);
+	p1->CommandList->push_back(new Command(EVT_START, 5));
+	p1->SetTimer(5);
+	p1->CommandList->push_back(new Command(EVT_CPU, 1));
+	p1->CommandList->push_back(new Command(EVT_LOCK, 0));
+	p1->CommandList->push_back(new Command(EVT_CPU, 1));
+	p1->CommandList->push_back(new Command(EVT_SSD, 5));
+	p1->CommandList->push_back(new Command(EVT_CPU, 1));
+	p1->CommandList->push_back(new Command(EVT_OUTPUT, 5));
+	p1->CommandList->push_back(new Command(EVT_CPU, 1));
+	p1->CommandList->push_back(new Command(EVT_UNLOCK, 0));
+	p1->CommandList->push_back(new Command(EVT_CPU, 1));
+	p1->CommandList->push_back(new Command(EVT_END));
 
 #endif
 
@@ -92,7 +116,7 @@ int main()
 	{
 		OS->DoWork();
 		HW->DoWork();
-		ReportSystemStatus();
+		ReportSystemStatus(OS);
 		if (OS->ProcessList->size() == 0)
 			break;
 		Sleep(1000);
@@ -129,20 +153,11 @@ Command* CreateCommand(string& instruct) //input originally char instruct[]
 	}
 }
 
-void ReportSystemStatus()
-{ 
+void ReportSystemStatus(OperatingSystem* OS)
+{
 	for (int i = 0; i < OS->ProcessList->size(); i++)
 	{
 		Process* p = OS->ProcessList->at(i);
-		if (p->Report)
-		{
-			cout << "Process: " << p->Pid << ", "
-				<< "Command: " << ToString(p->CurrentCommand()->event) << ", "
-				<< "Status: " << ToString(p->Status) << ", "
-				<< "Timer: " << p->Timer << ", "
-				<< "Total Time: " << p->TotalTime << ", "
-				<< endl;
-			p->Report = false;
-		}
+		ReportProcessStatus(p);
 	}
 }

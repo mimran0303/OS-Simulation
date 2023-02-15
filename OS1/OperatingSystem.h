@@ -20,6 +20,7 @@ public:
 	ProcessVector *ProcessList;
 
 	int cpu_amount=0;
+
 	OperatingSystem(Hardware* _hw)
 	{		
 		HW = _hw;
@@ -43,18 +44,41 @@ public:
 		{
 			Process* p = ProcessList->at(i);
 
-			if (p->Status==Ready)
+			// If event is start, then wait for number of 
+			// sseconds before executing next command
+			if (p->CurrentCommand()->event == EVT_START)
 			{
-				ScheduleNextCommand(p);
-				p->Report = true;
+				if (!p->IsTimerExpired())
+				{
+					p->DoWork();
+				}
+				else
+				{
+					ReportProcessStatus(p,true);
+					ScheduleNextCommand(p);
+				}
+			}
+			else 
+			{
+				if (p->Status == Ready)
+				{
+					ScheduleNextCommand(p);
+					p->Report = true;
+				}
 			}
 		}
 	}
 
 	void ScheduleNextCommand(Process* process)
 	{
-		process->MoveToNextCommand();
-		
+		if (process->CurrentCommand()->event == EVT_START)
+		{
+			if (!process->IsTimerExpired())
+				return;
+			// Additional implementation of EVT_START is in main() that creates a new process
+		}
+
+		process->MoveToNextCommand();		
 		if (process->CurrentCommand() == NULL)
 		{
 			cout << "WARNING: No command to execute" << endl;
@@ -64,10 +88,10 @@ public:
 		process->ResetTimer();
 		process->MaxTimer = process->CurrentCommand()->num;
 
-#if PLACEHOLDER_ONLY 
-		if (process ->CurrentCommand()->event == EVT_START) 
+#if PLACEHOLDER_ONLY
+		if (process->CurrentCommand()->event == EVT_START) 
 		{
-			// Actual implementation of EVT_START is in main() that creates a new process
+			// Additional implementation of EVT_START is in main() that creates a new process
 		}
 #endif
 		if (process->CurrentCommand()->event == EVT_CPU)//process goes to RQ

@@ -2,6 +2,8 @@
 		NOTES
 	--------------
 
+*** get rid of rand() ***
+
 Example of output when there is only one process :
 
 Process 0 starts at time 10 ms

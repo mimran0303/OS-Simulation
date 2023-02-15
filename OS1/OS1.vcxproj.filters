@@ -61,10 +61,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Todo.txt" />
-    <Text Include="input1.txt" />
-    <Text Include="input2.txt" />
-    <Text Include="Input3.txt" />
     <Text Include="example output.txt" />
   </ItemGroup>
 </Project>
