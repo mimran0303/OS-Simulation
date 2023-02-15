@@ -54,7 +54,7 @@ public:
 				}
 				else
 				{
-					ReportProcessStatus(p,true);
+					ReportProcessStatus(p, true);
 					ScheduleNextCommand(p);
 				}
 			}
@@ -71,13 +71,6 @@ public:
 
 	void ScheduleNextCommand(Process* process)
 	{
-		if (process->CurrentCommand()->event == EVT_START)
-		{
-			if (!process->IsTimerExpired())
-				return;
-			// Additional implementation of EVT_START is in main() that creates a new process
-		}
-
 		process->MoveToNextCommand();		
 		if (process->CurrentCommand() == NULL)
 		{
