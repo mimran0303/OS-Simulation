@@ -64,7 +64,8 @@ public:
 
 	void MoveToNextCommand()
 	{
-		c++;
+		if(c <= CommandList->size())
+			c++;
 	}
 
 	bool IsTimerExpired()
@@ -98,9 +99,9 @@ public:
 	}
 };
 
-void ReportProcessStatus(Process* p, bool force = false)
+void ReportProcessStatus(Process* p)
 {
-	if (p->Report || force)
+	if (p->Report && p->CurrentCommand() != NULL)
 	{
 		cout << "Process: " << p->Pid << ", "
 			<< "Command: " << ToString(p->CurrentCommand()->event) << ", "

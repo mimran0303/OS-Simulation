@@ -1,7 +1,7 @@
 /*
 * 
 * Student: Mariam Imran
-* COSC 3360 Section 6310, Professor Paris
+* COSC 3360, Professor Paris
 * Due Feb 22, 2023
 * 
 */
@@ -85,12 +85,13 @@ int main()
 	int pid = 100;
 	Process* p0 = new Process(pid++);
 	OS->ProcessList->push_back(p0);						
-	p0->CommandList->push_back(new Command(EVT_START, 1));
+	p0->CommandList->push_back(new Command(EVT_START, 0));
 	p0->SetTimer(1);
-	p0->CommandList->push_back(new Command(EVT_CPU, 5));
-	p0->CommandList->push_back(new Command(EVT_SSD, 5));
-	p0->CommandList->push_back(new Command(EVT_CPU, 1));
+	p0->CommandList->push_back(new Command(EVT_CPU, 7));
+	p0->CommandList->push_back(new Command(EVT_SSD, 2));
+	p0->CommandList->push_back(new Command(EVT_CPU, 3));
 	p0->CommandList->push_back(new Command(EVT_END));
+	p0->Report = true;
 
 	Process* p1 = new Process(pid++);
 	OS->ProcessList->push_back(p1);
@@ -106,12 +107,14 @@ int main()
 	p1->CommandList->push_back(new Command(EVT_UNLOCK, 0));
 	p1->CommandList->push_back(new Command(EVT_CPU, 1));
 	p1->CommandList->push_back(new Command(EVT_END));
+	p1->Report = true;
 
 #endif
 
 	//
 	// Stage 2: Orchestration - Do Work in Timer
 	//
+	ReportSystemStatus(OS);
 	while (true)
 	{
 		OS->DoWork();
