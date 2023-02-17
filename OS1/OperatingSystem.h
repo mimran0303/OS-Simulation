@@ -44,47 +44,44 @@ public:
 		{
 			Process* p = ProcessList->at(i);
 
-			// If event is start, then wait for number of 
-			// sseconds before executing next command
-			if (p->CurrentCommand() != NULL && p->CurrentCommand()->event == EVT_START)
-			{
+			if (p->CurrentCommand() == NULL)
+				BeforeNextCommand(p);
+			else if (p->CurrentCommand()->event == EVT_START)
 				if (!p->IsTimerExpired())
-				{
 					p->DoWork();
-					continue;
-				}
 				else
-				{
-					p->Status = Ready;
-					// ReportProcessStatus(p, true);
-					//p->Report = true;
-					// p->Status = Ready;
-					//ScheduleNextCommand(p);
-				}
-			}
-			if (p->Status == Ready)
-			{
-				ScheduleNextCommand(p);
-				p->Report = true;
-			}
-			/*
-			if (p->CurrentCommand()->event == EVT_START && p->Status == Blocked)
-			{
-				if (!p->IsTimerExpired())
-					p->DoWork();
-				else 
-				{
-					p->Status = Ready;
-					p->Report = true;
-				}
-			}
-			*/
+					BeforeNextCommand(p);
+			else if (p->Status == Ready)
+				BeforeNextCommand(p);
 		}
+	}
+
+	void BeforeNextCommand(Process* process)
+	{
+		if (process->CurrentCommand() == NULL)
+		{
+
+		}
+		else if (process->CurrentCommand()->event == EVT_START)
+		{
+			// Additional implementation of EVT_START is in main() that creates a new process
+			process->Status = Blocked;
+			cout << "Process " << process->Pid << " starts at time " << process->CurrentCommand()->num << " ms" << endl;
+			cout << "Process Table" << endl;
+			for (int i = 0; i < ProcessList->size();i++)
+			{
+				cout << "Process " << process->Pid << " " << ToString(process->Status) << endl;
+			}
+			cout << endl;
+		}
+
+		ScheduleNextCommand(process);
 	}
 
 	void ScheduleNextCommand(Process* process)
 	{
-		process->MoveToNextCommand();		
+		process->MoveToNextCommand();
+
 		if (process->CurrentCommand() == NULL)
 		{
 			cout << "WARNING: No command to execute" << endl;
@@ -93,48 +90,64 @@ public:
 
 		process->MaxTimer = process->CurrentCommand()->num;
 		process->ResetTimer();
+		process->Report = true;
 
-#if !PLACEHOLDER_ONLY
+		//ISSUES:
+		//multiple start summary tables because we add process to CPU multiple times
+		//status shouldnt be blocked in start summary it should be running or ready
+		//status in end summary should be terminated or blocked
+
 		if (process->CurrentCommand()->event == EVT_START) 
 		{
 			// Additional implementation of EVT_START is in main() that creates a new process
 			process->Status = Blocked;
+			//cout << "Process: " << process->Pid << ", Started" << endl;
 		}
-#endif
 		else if (process->CurrentCommand()->event == EVT_CPU)//process goes to RQ
 		{
 			ReadyQ->push(process);
 			process->Status = Blocked;
-			cout << "Process " << process->Pid <<" added to ReadyQ" << endl;
+			//cout << "Process: " << process->Pid <<", Added to ReadyQ" << endl;
+			//Process 0 starts at time 10 ms
+#if COMMENTED
+				
+#endif
 		}
 		else if (process->CurrentCommand()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
 		{
 			SSDQ->push(process);
 			process->Status = Blocked;
-			cout << "Process " << process->Pid << " added to SSDQ" << endl;
+			//cout << "Process: " << process->Pid << ", Added to SSDQ" << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_LOCK)//lock specified by process is in locked state
 		{
 			int num = process->CurrentCommand()->num;
 			LockQ[num]->push(process);
 			process->Status = Blocked; 
-			cout << "Process " << process->Pid << " acquiered LockQ " << num << endl;
+			//cout << "Process: " << process->Pid << ", Acquiered LockQ " << num << endl;
 		}	
 		else if (process->CurrentCommand()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
 		{
 			int num = process->CurrentCommand()->num;
 			HW->Locks[num]->Unlock();
-			cout << "Process " << process->Pid << " released Lock " << num << endl;
+			//cout << "Process: " << process->Pid << ", Released Lock " << num << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_OUTPUT)//goes to user immediately
 		{
 			HW->UC->ProcessList->push_back(process);
 			process->Status = Running;
-			cout << "Process " << process->Pid << " at UserConsole" << endl;
+			//cout << "Process: " << process->Pid << ", At UserConsole" << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_END)//process terminates
 		{
 			process->Status = Terminated;
+			cout << "Process " << process->Pid << " terminates at time " << process->CurrentCommand()->num << " ms" << endl;
+			cout << "Process Table" << endl;
+			for (int i =0; i < ProcessList->size();i++)
+			{
+				cout << "Process " << process->Pid << " " << ToString(process->Status) << endl;
+			}
+			cout << endl;
 		}
 	}
 

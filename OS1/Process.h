@@ -38,7 +38,7 @@ public:
 	int Pid;
 
 	vector<Command*>* CommandList = new vector<Command*>() ;//commands added to
-	int c = 0;
+	int c = -1;
 	int amount;
 
 	long MaxTimer = 0;
@@ -64,7 +64,7 @@ public:
 
 	void MoveToNextCommand()
 	{
-		if(c <= CommandList->size())
+		if(c <= (int)CommandList->size())
 			c++;
 	}
 
@@ -101,13 +101,14 @@ public:
 
 void ReportProcessStatus(Process* p)
 {
+	return;
 	if (p->Report && p->CurrentCommand() != NULL)
 	{
 		cout << "Process: " << p->Pid << ", "
 			<< "Command: " << ToString(p->CurrentCommand()->event) << ", "
 			<< "Status: " << ToString(p->Status) << ", "
-			<< "Timer: " << p->Timer << ", "
 			<< "Total Time: " << p->TotalTime << ", "
+			<< "Timer: " << p->Timer << ", "
 			<< endl;
 		p->Report = false;
 	}

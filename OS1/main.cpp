@@ -82,21 +82,18 @@ int main()
 	//if process 1 ends before process 2 the program stops running
 	//we dont want rand() anymore instead we want to start from 0 and increment
 	//multiple processes cannot be run at once
-	int pid = 100;
+	int pid = 0;
 	Process* p0 = new Process(pid++);
 	OS->ProcessList->push_back(p0);						
-	p0->CommandList->push_back(new Command(EVT_START, 0));
-	p0->SetTimer(1);
+	p0->CommandList->push_back(new Command(EVT_START, 10));
 	p0->CommandList->push_back(new Command(EVT_CPU, 7));
 	p0->CommandList->push_back(new Command(EVT_SSD, 2));
 	p0->CommandList->push_back(new Command(EVT_CPU, 3));
 	p0->CommandList->push_back(new Command(EVT_END));
-	p0->Report = true;
 
 	Process* p1 = new Process(pid++);
 	OS->ProcessList->push_back(p1);
-	p1->CommandList->push_back(new Command(EVT_START, 5));
-	p1->SetTimer(5);
+	p1->CommandList->push_back(new Command(EVT_START, 50));
 	p1->CommandList->push_back(new Command(EVT_CPU, 1));
 	p1->CommandList->push_back(new Command(EVT_LOCK, 0));
 	p1->CommandList->push_back(new Command(EVT_CPU, 1));
@@ -107,7 +104,6 @@ int main()
 	p1->CommandList->push_back(new Command(EVT_UNLOCK, 0));
 	p1->CommandList->push_back(new Command(EVT_CPU, 1));
 	p1->CommandList->push_back(new Command(EVT_END));
-	p1->Report = true;
 
 #endif
 
@@ -122,7 +118,7 @@ int main()
 		ReportSystemStatus(OS);
 		if (OS->ProcessList->size() == 0)
 			break;
-		Sleep(1000);
+		Sleep(10);
 	}
 }
 
