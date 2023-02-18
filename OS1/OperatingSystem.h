@@ -19,7 +19,7 @@ public:
 	LockQueue *LockQ[LOCK_COUNT];
 	ProcessVector *ProcessList;
 
-	int cpu_amount=0;
+	
 
 	OperatingSystem(Hardware* _hw)
 	{		
@@ -33,7 +33,7 @@ public:
 			LockQ[j] = new LockQueue();
 		}
 	}
-
+	int cpu_amount = HW->CPUS->size();
 	void DoWork()
 	{
 		//cout << " OS DOING WORK " << endl;
@@ -67,10 +67,24 @@ public:
 			// Additional implementation of EVT_START is in main() that creates a new process
 			process->Status = Blocked;
 			cout << "Process " << process->Pid << " starts at time " << process->CurrentCommand()->num << " ms" << endl;
-			cout << "Process Table" << endl;
-			for (int i = 0; i < ProcessList->size();i++)
+
+			if (ReadyQ->size() >= 1)
 			{
-				cout << "Process " << process->Pid << " " << ToString(process->Status) << endl;
+				cout << "Current number of busy cores: " <<cpu_amount <<endl;
+				for (int i=0; i<ReadyQ->size(); i++)
+					cout << "Ready Queue contains process " << ReadyQ->at(i)->Pid << endl;
+			}
+
+			if (ReadyQ->empty())
+			{
+				cout << "Current number of busy cores: 0" << endl;
+				cout << "Ready Queue is empty" << endl;
+			}
+
+			cout << "Process Table:" << endl;
+			for (auto element: *ProcessList)
+			{
+				cout << "Process " << element->Pid << " " << ToString(element->Status) << endl;
 			}
 			cout << endl;
 		}
@@ -93,10 +107,10 @@ public:
 		process->Report = true;
 
 		//ISSUES:
-		//multiple start summary tables because we add process to CPU multiple times
-		//status shouldnt be blocked in start summary it should be running or ready
+		//status in start summary should be running or ready
 		//status in end summary should be terminated or blocked
-
+		//we are having issues with ready queue 
+		//we are having issues with total time in terminated summary
 		if (process->CurrentCommand()->event == EVT_START) 
 		{
 			// Additional implementation of EVT_START is in main() that creates a new process
@@ -141,15 +155,54 @@ public:
 		else if (process->CurrentCommand()->event == EVT_END)//process terminates
 		{
 			process->Status = Terminated;
-			cout << "Process " << process->Pid << " terminates at time " << process->CurrentCommand()->num << " ms" << endl;
-			cout << "Process Table" << endl;
-			for (int i =0; i < ProcessList->size();i++)
+			cout << "Process " << process->Pid << " terminates at time " << process->TotalTime << " ms" << endl;
+
+			if (ReadyQ->size() >= 1)
 			{
-				cout << "Process " << process->Pid << " " << ToString(process->Status) << endl;
+				cout << "Current number of busy cores: " <<cpu_amount <<endl;
+				for (int i =0;i < ReadyQ->size(); i++)
+					cout << "Ready Queue contains process " << ReadyQ->at(i)->Pid << endl;
+			}
+
+			if (ReadyQ->empty())
+			{
+				cout << "Current number of busy cores: 0" << endl;
+				cout << "Ready Queue is empty" << endl;
+			}
+
+			cout << "Process Table:" << endl;
+			for (auto element : *ProcessList)
+			{
+				cout << "Process " << element->Pid << " " << ToString(element->Status) << endl;
 			}
 			cout << endl;
+
+			//FinalSummary(process);
 		}
 	}
+	//int TotalTimeSummary(Process* p)
+	//{
+	//	int totaltime = 0;
+
+	//	if (ProcessList->size() > 1)
+	//	{
+	//		for (int i = 0; i < ProcessList->size();i++)
+	//		{
+	//			totaltime += p->TotalTime;
+	//		}
+	//	}
+	//	return totaltime;
+	//}
+	//void FinalSummary(Process* p)
+	//{
+	//	int summary = TotalTimeSummary(p); //this is coming out to 0
+
+	//	if (ProcessList->size() == 1)
+	//	{
+	//		cout << "SUMMARY:" << endl;
+	//		cout << "Total elapsed time : " << p->TotalTime << " ms" << endl;
+	//	}
+	//}
 
 	void CleanUp()
 	{

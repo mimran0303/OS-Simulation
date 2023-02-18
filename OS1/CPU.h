@@ -20,8 +20,8 @@ public:
 	{
 		if (MyProcess == NULL && Queue->size() >= 1)
 		{
-			MyProcess = Queue->front();
-			Queue->pop();
+			MyProcess = Queue->pop();
+			// Queue->pop();
 			MyProcess->Status = Running;
 			return;
 		}

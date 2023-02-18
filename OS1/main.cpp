@@ -10,8 +10,8 @@
 #include <string>
 #include "Definition.h"
 #include "TestEnum.h"
+#include"QueueTest.h"
 #include "Event.h"
-#include "TestProcess.h"
 #include "Hardware.h"
 #include "OperatingSystem.h"
 #include "CPU.h"
@@ -24,7 +24,13 @@ void ReportSystemStatus(OperatingSystem* OS);
 Hardware* HW = new Hardware();
 OperatingSystem* OS = new OperatingSystem(HW);
 
-
+//int main()
+//{
+//	
+//	test_fqueue();
+//
+//	return 0;
+//}
 int main()
 {
 	HW->Initialize(OS->SSDQ, OS->LockQ);
@@ -75,35 +81,30 @@ int main()
 #else
 
 	CPU* cpu1 = new CPU(OS->ReadyQ);
-	CPU* cpu2 = new CPU(OS->ReadyQ);
+	//CPU* cpu2 = new CPU(OS->ReadyQ);
 	HW->CPUS->push_back(cpu1);
-	HW->CPUS->push_back(cpu2);
+	//HW->CPUS->push_back(cpu2);
 
-	//if process 1 ends before process 2 the program stops running
-	//we dont want rand() anymore instead we want to start from 0 and increment
-	//multiple processes cannot be run at once
+	//statuses are not right
+	//final summary table only print total elapsed time for last process in process vector
 	int pid = 0;
 	Process* p0 = new Process(pid++);
 	OS->ProcessList->push_back(p0);						
 	p0->CommandList->push_back(new Command(EVT_START, 10));
-	p0->CommandList->push_back(new Command(EVT_CPU, 7));
-	p0->CommandList->push_back(new Command(EVT_SSD, 2));
-	p0->CommandList->push_back(new Command(EVT_CPU, 3));
-	p0->CommandList->push_back(new Command(EVT_END));
+	p0->CommandList->push_back(new Command(EVT_CPU, 200));
+	p0->CommandList->push_back(new Command(EVT_SSD, 300));
+	p0->CommandList->push_back(new Command(EVT_CPU, 250));
+	p0->CommandList->push_back(new Command(EVT_END)); //760
 
 	Process* p1 = new Process(pid++);
 	OS->ProcessList->push_back(p1);
 	p1->CommandList->push_back(new Command(EVT_START, 50));
-	p1->CommandList->push_back(new Command(EVT_CPU, 1));
-	p1->CommandList->push_back(new Command(EVT_LOCK, 0));
-	p1->CommandList->push_back(new Command(EVT_CPU, 1));
-	p1->CommandList->push_back(new Command(EVT_SSD, 5));
-	p1->CommandList->push_back(new Command(EVT_CPU, 1));
-	p1->CommandList->push_back(new Command(EVT_OUTPUT, 5));
-	p1->CommandList->push_back(new Command(EVT_CPU, 1));
-	p1->CommandList->push_back(new Command(EVT_UNLOCK, 0));
-	p1->CommandList->push_back(new Command(EVT_CPU, 1));
-	p1->CommandList->push_back(new Command(EVT_END));
+	p1->CommandList->push_back(new Command(EVT_CPU, 200));
+	p1->CommandList->push_back(new Command(EVT_SSD, 300));
+	p1->CommandList->push_back(new Command(EVT_CPU, 100));
+	p1->CommandList->push_back(new Command(EVT_END)); //650
+	//total elapsed should be 1410 ms
+	
 
 #endif
 
@@ -111,15 +112,22 @@ int main()
 	// Stage 2: Orchestration - Do Work in Timer
 	//
 	ReportSystemStatus(OS);
+
+	int elapsedtime = 0;
 	while (true)
 	{
+		elapsedtime ++;
 		OS->DoWork();
 		HW->DoWork();
 		ReportSystemStatus(OS);
 		if (OS->ProcessList->size() == 0)
 			break;
-		Sleep(10);
+		Sleep(0.5);
 	}
+
+		cout << "SUMMARY:" << endl;
+		cout << "Total elapsed time : " << elapsedtime << " ms" << endl;
+	
 }
 
 Command* CreateCommand(string& instruct) //input originally char instruct[]
