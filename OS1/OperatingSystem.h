@@ -19,7 +19,7 @@ public:
 	LockQueue *LockQ[LOCK_COUNT];
 	ProcessVector *ProcessList;
 
-	
+	Process* process0;
 
 	OperatingSystem(Hardware* _hw)
 	{		
@@ -33,7 +33,9 @@ public:
 			LockQ[j] = new LockQueue();
 		}
 	}
-	int cpu_amount = HW->CPUS->size();
+	
+	
+
 	void DoWork()
 	{
 		//cout << " OS DOING WORK " << endl;
@@ -70,14 +72,32 @@ public:
 
 			if (ReadyQ->size() >= 1)
 			{
-				cout << "Current number of busy cores: " <<cpu_amount <<endl;
+				int BusyCores = 0;
+				for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
+				{
+					CPU* cpu = HW->CPUS->at(i);
+					if (cpu->ProcessActive())
+					{
+						BusyCores++;
+					}
+				}
+				cout << "Current number of busy cores: " << BusyCores << endl;
 				for (int i=0; i<ReadyQ->size(); i++)
 					cout << "Ready Queue contains process " << ReadyQ->at(i)->Pid << endl;
 			}
 
 			if (ReadyQ->empty())
 			{
-				cout << "Current number of busy cores: 0" << endl;
+				int BusyCores = 0;
+				for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
+				{
+					CPU* cpu = HW->CPUS->at(i);
+					if (cpu->ProcessActive())
+					{
+						BusyCores++;
+					}
+				}
+				cout << "Current number of busy cores: " << BusyCores << endl;
 				cout << "Ready Queue is empty" << endl;
 			}
 
@@ -109,7 +129,7 @@ public:
 		//ISSUES:
 		//status in start summary should be running or ready
 		//status in end summary should be terminated or blocked
-		//we are having issues with ready queue 
+		// status of ready queue inaccurate because of statuses
 		//we are having issues with total time in terminated summary
 		if (process->CurrentCommand()->event == EVT_START) 
 		{
@@ -159,14 +179,32 @@ public:
 
 			if (ReadyQ->size() >= 1)
 			{
-				cout << "Current number of busy cores: " <<cpu_amount <<endl;
+				int BusyCores = 0;
+				for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
+				{
+					CPU* cpu = HW->CPUS->at(i);
+					if (cpu->ProcessActive())
+					{
+						BusyCores++;
+					}
+				}
+				cout << "Current number of busy cores: " << BusyCores << endl;
 				for (int i =0;i < ReadyQ->size(); i++)
 					cout << "Ready Queue contains process " << ReadyQ->at(i)->Pid << endl;
 			}
 
 			if (ReadyQ->empty())
 			{
-				cout << "Current number of busy cores: 0" << endl;
+				int BusyCores = 0;
+				for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
+				{
+					CPU* cpu = HW->CPUS->at(i);
+					if (cpu->ProcessActive())
+					{
+						BusyCores++;
+					}
+				}
+				cout << "Current number of busy cores: " << BusyCores << endl;
 				cout << "Ready Queue is empty" << endl;
 			}
 

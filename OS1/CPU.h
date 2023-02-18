@@ -8,9 +8,10 @@ class CPU
 {
 private:
 	ReadyQueue* Queue;
-	Process* MyProcess = NULL;
+	
 
 public:
+	Process* MyProcess = NULL;
 	CPU(ReadyQueue* queue)
 	{
 		Queue = queue;
@@ -42,6 +43,14 @@ public:
 		}
 
 		//cout << " CPU DOING WORK " << endl;
+	}
+
+	bool ProcessActive()
+	{
+		if (MyProcess == NULL)
+			return false;
+		else
+			return true;
 	}
 };
 
