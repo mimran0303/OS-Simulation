@@ -72,7 +72,7 @@ public:
 		else if (process->CurrentCommand()->event == EVT_START)
 		{
 			// Additional implementation of EVT_START is in main() that creates a new process
-			process->Status = Blocked;
+			process->Status = Ready;
 			
 			cout << "Process " << process->Pid << " starts at time " << process->CurrentCommand()->num << " ms" << endl;
 			Report();

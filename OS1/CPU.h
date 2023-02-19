@@ -33,7 +33,7 @@ public:
 
 		if (MyProcess->IsTimerExpired())
 		{
-			MyProcess->Status = Blocked;
+			MyProcess->Status = Running;
 			MyProcess->Report = true;
 			MyProcess = NULL;
 		}
