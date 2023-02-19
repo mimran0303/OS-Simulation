@@ -18,6 +18,7 @@ public:
 	SSDQueue *SSDQ;
 	LockQueue *LockQ[LOCK_COUNT];
 	ProcessVector *ProcessList;
+	ProcessVector* DeadProcessList;
 
 	Process* process0;
 
@@ -25,6 +26,7 @@ public:
 	{		
 		HW = _hw;
 		ProcessList = new ProcessVector;
+		DeadProcessList = new ProcessVector;
 		ReadyQ = new ReadyQueue();
 		SSDQ = new SSDQueue();
 
@@ -156,10 +158,15 @@ public:
 			{
 				newList->push_back(p);
 			}
+			else
+			{
+				DeadProcessList->push_back(p);
+			}
 		}
 		delete ProcessList;
 		ProcessList = newList;
 	}
+
 	void Report()
 	{
 

@@ -153,9 +153,15 @@ int main()
 			break;
 	}
 
-		cout << "SUMMARY:" << endl;
-		cout << "Total elapsed time : " << elapsedtime << " ms" << endl;
-	
+	cout << "SUMMARY:" << endl;
+	cout << "Total elapsed time : " << elapsedtime << " ms" << endl;
+
+	int TotalProcessRunTime = 0;
+	for (int i = 0;i < OS->DeadProcessList->size();i++)
+	{
+		TotalProcessRunTime = TotalProcessRunTime + OS->DeadProcessList->at(i)->TotalTime;
+	}
+	cout << "Total Process Run Time time : " << TotalProcessRunTime << " ms" << endl;
 }
 
 Command* CreateCommand(string& instruct) //input originally char instruct[]
