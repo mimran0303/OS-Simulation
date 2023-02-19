@@ -60,3 +60,5 @@ typedef queue<Process*> SSDQueue;
 typedef vector<Process*> ProcessVector;
 
 const static int LOCK_COUNT = 2;
+
+const static bool DEBUG = false;

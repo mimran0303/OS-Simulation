@@ -73,45 +73,9 @@ public:
 		{
 			// Additional implementation of EVT_START is in main() that creates a new process
 			process->Status = Blocked;
+			
 			cout << "Process " << process->Pid << " starts at time " << process->CurrentCommand()->num << " ms" << endl;
-
-			if (ReadyQ->size() >= 1)
-			{
-				int BusyCores = 0;
-				for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
-				{
-					CPU* cpu = HW->CPUS->at(i);
-					if (cpu->ProcessActive())
-					{
-						BusyCores++;
-					}
-				}
-				cout << "Current number of busy cores: " << BusyCores << endl;
-				for (int i=0; i<ReadyQ->size(); i++)
-					cout << "Ready Queue contains process " << ReadyQ->at(i)->Pid << endl;
-			}
-
-			if (ReadyQ->empty())
-			{
-				int BusyCores = 0;
-				for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
-				{
-					CPU* cpu = HW->CPUS->at(i);
-					if (cpu->ProcessActive())
-					{
-						BusyCores++;
-					}
-				}
-				cout << "Current number of busy cores: " << BusyCores << endl;
-				cout << "Ready Queue is empty" << endl;
-			}
-
-			cout << "Process Table:" << endl;
-			for (auto element: *ProcessList)
-			{
-				cout << "Process " << element->Pid << " " << ToString(element->Status) << endl;
-			}
-			cout << endl;
+			Report();
 		}
 	}
 
@@ -137,31 +101,28 @@ public:
 		if (process->CurrentCommand()->event == EVT_START) 
 		{
 			// Additional implementation of EVT_START is in main() that creates a new process
-			process->Status = Ready;
-			//cout << "Process: " << process->Pid << ", Started" << endl;
+			// process->Status = Ready;
+			if (DEBUG) cout << "Process: " << process->Pid << ", Started" << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_CPU)//process goes to RQ
 		{
 			ReadyQ->push(process);
-			process->Status = Running;
-			//cout << "Process: " << process->Pid <<", Added to ReadyQ" << endl;
+			process->Status = Ready;
+			if (DEBUG) cout << "Process: " << process->Pid <<", Added to ReadyQ" << endl;
 			//Process 0 starts at time 10 ms
-#if COMMENTED
-				
-#endif
 		}
 		else if (process->CurrentCommand()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
 		{
 			SSDQ->push(process);
 			process->Status = Blocked;
-			//cout << "Process: " << process->Pid << ", Added to SSDQ" << endl;
+			if (DEBUG) cout << "Process: " << process->Pid << ", Added to SSDQ" << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_LOCK)//lock specified by process is in locked state
 		{
 			int num = process->CurrentCommand()->num;
 			LockQ[num]->push(process);
 			process->Status = Blocked; 
-			//cout << "Process: " << process->Pid << ", Acquiered LockQ " << num << endl;
+			if (DEBUG) cout << "Process: " << process->Pid << ", Acquiered LockQ " << num << endl;
 		}	
 		else if (process->CurrentCommand()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
 		{
@@ -169,60 +130,23 @@ public:
 			HW->Locks[num]->Unlock();
 			ReadyQ->push(process);
 			process->Status = Ready;
-			//cout << "Process: " << process->Pid << ", Released Lock " << num << endl;
+			if (DEBUG) cout << "Process: " << process->Pid << ", Released Lock " << num << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_OUTPUT)//goes to user immediately
 		{
 			HW->UC->ProcessList->push_back(process);
 			process->Status = Blocked;
-			//cout << "Process: " << process->Pid << ", At UserConsole" << endl;
+			if (DEBUG) cout << "Process: " << process->Pid << ", At UserConsole" << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_END)//process terminates
 		{
 			process->Status = Terminated;
-			cout << "Process " << process->Pid << " terminates at time " << process->TotalTime << " ms" << endl;
-
-			if (ReadyQ->size() >= 1)
-			{
-				int BusyCores = 0;
-				for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
-				{
-					CPU* cpu = HW->CPUS->at(i);
-					if (cpu->ProcessActive())
-					{
-						BusyCores++;
-					}
-				}
-				cout << "Current number of busy cores: " << BusyCores << endl;
-				for (int i =0;i < ReadyQ->size(); i++)
-					cout << "Ready Queue contains process " << ReadyQ->at(i)->Pid << endl;
-			}
-
-			if (ReadyQ->empty())
-			{
-				int BusyCores = 0;
-				for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
-				{
-					CPU* cpu = HW->CPUS->at(i);
-					if (cpu->ProcessActive())
-					{
-						BusyCores++;
-					}
-				}
-				cout << "Current number of busy cores: " << BusyCores << endl;
-				cout << "Ready Queue is empty" << endl;
-			}
-
-			cout << "Process Table:" << endl;
-			for (auto element : *ProcessList)
-			{
-				cout << "Process " << element->Pid << " " << ToString(element->Status) << endl;
-			}
-			cout << endl;
-
-			//FinalSummary(process);
+			 cout << "Process " << process->Pid << " terminates at time " << process->TotalTime << " ms" << endl;
+			Report();
 		}
+			
 	}
+
 	//int TotalTimeSummary(Process* p)
 	//{
 	//	int totaltime = 0;
@@ -261,5 +185,48 @@ public:
 		delete ProcessList;
 		ProcessList = newList;
 	}
+	void Report()
+	{
+		
+
+		if (ReadyQ->size() >= 1)
+		{
+			int BusyCores = 0;
+			for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
+			{
+				CPU* cpu = HW->CPUS->at(i);
+				if (cpu->ProcessActive())
+				{
+					BusyCores++;
+				}
+			}
+			cout << "Current number of busy cores: " << BusyCores << endl;
+			for (int i = 0;i < ReadyQ->size(); i++)
+				cout << "Ready Queue contains process " << ReadyQ->at(i)->Pid << endl;
+		}
+
+		if (ReadyQ->empty())
+		{
+			int BusyCores = 0;
+			for (int i = 0; i < HW->CPUS->size();i++)//count of processes within CPU 
+			{
+				CPU* cpu = HW->CPUS->at(i);
+				if (cpu->ProcessActive())
+				{
+					BusyCores++;
+				}
+			}
+			cout << "Current number of busy cores: " << BusyCores << endl;
+			cout << "Ready Queue is empty" << endl;
+		}
+
+		cout << "Process Table:" << endl;
+		for (auto element : *ProcessList)
+		{
+			cout << "Process " << element->Pid << " " << ToString(element->Status) << endl;
+		}
+		cout << endl;
+	}
+	
 };
 

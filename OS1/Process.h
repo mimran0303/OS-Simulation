@@ -41,7 +41,7 @@ public:
 	int Pid;
 
 	vector<Command*>* CommandList = new vector<Command*>() ;//commands added to
-	int c = 0;
+	int c = -1;
 	int amount;
 
 	long MaxTimer = 0;
