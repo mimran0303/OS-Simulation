@@ -126,13 +126,13 @@ int main()
 	p0->CommandList->push_back(new Command(EVT_CPU, 200));
 	p0->CommandList->push_back(new Command(EVT_END)); //910
 
-	//Process* p1 = new Process(pid++);
-	//OS->ProcessList->push_back(p1);
-	//p1->CommandList->push_back(new Command(EVT_START, 50));
-	//p1->CommandList->push_back(new Command(EVT_CPU, 200));
-	//p1->CommandList->push_back(new Command(EVT_SSD, 300));
-	//p1->CommandList->push_back(new Command(EVT_CPU, 100));
-	//p1->CommandList->push_back(new Command(EVT_END)); //650
+	Process* p1 = new Process(pid++);
+	OS->ProcessList->push_back(p1);
+	p1->CommandList->push_back(new Command(EVT_START, 50));
+	p1->CommandList->push_back(new Command(EVT_CPU, 200));
+	p1->CommandList->push_back(new Command(EVT_SSD, 300));
+	p1->CommandList->push_back(new Command(EVT_CPU, 100));
+	p1->CommandList->push_back(new Command(EVT_END)); //650
 
 #endif
 
