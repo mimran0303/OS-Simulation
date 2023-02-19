@@ -128,7 +128,6 @@ public:
 		{
 			int num = process->CurrentCommand()->num;
 			HW->Locks[num]->Unlock();
-			ReadyQ->push(process);
 			process->Status = Ready;
 			if (DEBUG) cout << "Process: " << process->Pid << ", Released Lock " << num << endl;
 		}
@@ -147,30 +146,6 @@ public:
 			
 	}
 
-	//int TotalTimeSummary(Process* p)
-	//{
-	//	int totaltime = 0;
-
-	//	if (ProcessList->size() > 1)
-	//	{
-	//		for (int i = 0; i < ProcessList->size();i++)
-	//		{
-	//			totaltime += p->TotalTime;
-	//		}
-	//	}
-	//	return totaltime;
-	//}
-	//void FinalSummary(Process* p)
-	//{
-	//	int summary = TotalTimeSummary(p); //this is coming out to 0
-
-	//	if (ProcessList->size() == 1)
-	//	{
-	//		cout << "SUMMARY:" << endl;
-	//		cout << "Total elapsed time : " << p->TotalTime << " ms" << endl;
-	//	}
-	//}
-
 	void RemoveTerminatedProcesses()
 	{
 		vector<Process*>* newList = new vector<Process*>();
@@ -187,7 +162,6 @@ public:
 	}
 	void Report()
 	{
-		
 
 		if (ReadyQ->size() >= 1)
 		{
@@ -221,9 +195,12 @@ public:
 		}
 
 		cout << "Process Table:" << endl;
-		for (auto element : *ProcessList)
+		for (auto process : *ProcessList)
 		{
-			cout << "Process " << element->Pid << " " << ToString(element->Status) << endl;
+			if (process->Status != New)
+			{
+				cout << "Process " << process->Pid << " " << ToString(process->Status) << endl;
+			}
 		}
 		cout << endl;
 	}

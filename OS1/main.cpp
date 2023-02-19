@@ -6,6 +6,10 @@
 * 
 */
 
+#define PRODUCTION 0
+#define TEST_1 0
+#define TEST_2 1
+
 #include <iostream>
 #include <string>
 #include "Definition.h"
@@ -71,7 +75,7 @@ int main()
 			cout << "Error: No [Start] command defined to create a process " << endl;
 	}
 
-#else
+#elif TEST_1
 
 	CPU* cpu1 = new CPU(OS->ReadyQ);
 	//CPU* cpu2 = new CPU(OS->ReadyQ);
@@ -81,6 +85,7 @@ int main()
 	//statuses are not right
 	//final summary table only print total elapsed time for last process in process vector
 	int pid = 0;
+
 	Process* p0 = new Process(pid++);
 	OS->ProcessList->push_back(p0);						
 	p0->CommandList->push_back(new Command(EVT_START, 10));
@@ -97,7 +102,37 @@ int main()
 	p1->CommandList->push_back(new Command(EVT_CPU, 100));
 	p1->CommandList->push_back(new Command(EVT_END)); //650
 	//total elapsed should be 1410 ms
-	
+
+#elif TEST_2
+
+	CPU* cpu1 = new CPU(OS->ReadyQ);
+	//CPU* cpu2 = new CPU(OS->ReadyQ);
+	HW->CPUS->push_back(cpu1);
+	//HW->CPUS->push_back(cpu2);
+
+	//statuses are not right
+	//final summary table only print total elapsed time for last process in process vector
+	int pid = 0;
+
+	Process* p0 = new Process(pid++);
+	OS->ProcessList->push_back(p0);
+	p0->CommandList->push_back(new Command(EVT_START, 10));
+	p0->CommandList->push_back(new Command(EVT_CPU, 200));
+	p0->CommandList->push_back(new Command(EVT_SSD, 300));
+	p0->CommandList->push_back(new Command(EVT_CPU, 100));
+	p0->CommandList->push_back(new Command(EVT_LOCK, 0));
+	p0->CommandList->push_back(new Command(EVT_CPU, 100));
+	p0->CommandList->push_back(new Command(EVT_UNLOCK, 0));
+	p0->CommandList->push_back(new Command(EVT_CPU, 200));
+	p0->CommandList->push_back(new Command(EVT_END)); //910
+
+	//Process* p1 = new Process(pid++);
+	//OS->ProcessList->push_back(p1);
+	//p1->CommandList->push_back(new Command(EVT_START, 50));
+	//p1->CommandList->push_back(new Command(EVT_CPU, 200));
+	//p1->CommandList->push_back(new Command(EVT_SSD, 300));
+	//p1->CommandList->push_back(new Command(EVT_CPU, 100));
+	//p1->CommandList->push_back(new Command(EVT_END)); //650
 
 #endif
 
