@@ -41,7 +41,6 @@ public:
 	{
 		MyProcess = Queue->front();
 		Queue->pop();
-		MyProcess->Status = Ready;
 		MyProcess->Report = true;
 	}
 

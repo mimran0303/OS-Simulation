@@ -22,7 +22,6 @@ public:
 		if (MyProcess == NULL && Queue->size() >= 1)
 		{
 			MyProcess = Queue->pop();
-			// Queue->pop();
 			MyProcess->Status = Running;
 			return;
 		}
@@ -30,14 +29,11 @@ public:
 		if (MyProcess == NULL)
 			return;
 		
-		if (MyProcess->Status == Running)
-		{
-			MyProcess->DoWork();
-		}
+		MyProcess->DoWork();
 
 		if (MyProcess->IsTimerExpired())
 		{
-			MyProcess->Status = Ready;
+			MyProcess->Status = Blocked;
 			MyProcess->Report = true;
 			MyProcess = NULL;
 		}

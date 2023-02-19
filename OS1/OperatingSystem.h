@@ -33,29 +33,34 @@ public:
 			LockQ[j] = new LockQueue();
 		}
 	}
-	
-	
+
+	void NewProcessWork()
+	{
+		for (int i = 0;i < ProcessList->size();i++)
+		{
+			Process* p = ProcessList->at(i);
+			if (p->Status == New)
+				p->DoWork();
+		}
+	}
 
 	void DoWork()
 	{
-		//cout << " OS DOING WORK " << endl;
-
-		CleanUp(); //remove terminated processes from process list
+		NewProcessWork();
+		RemoveTerminatedProcesses();
 
 		for (int i = 0;i < ProcessList->size();i++)
 		{
 			Process* p = ProcessList->at(i);
-
-			if (p->CurrentCommand() == NULL)
-				BeforeNextCommand(p);
-			else if (p->CurrentCommand()->event == EVT_START)
-				if (!p->IsTimerExpired())
-					p->DoWork();
-				else
-					BeforeNextCommand(p);
-			else if (p->Status == Ready)
-				BeforeNextCommand(p);
+			if (p->IsTimerExpired())
+				NextCommand(p);
 		}
+	}
+
+	void NextCommand(Process* process)
+	{
+		BeforeNextCommand(process);
+		ScheduleNextCommand(process);
 	}
 
 	void BeforeNextCommand(Process* process)
@@ -108,8 +113,6 @@ public:
 			}
 			cout << endl;
 		}
-
-		ScheduleNextCommand(process);
 	}
 
 	void ScheduleNextCommand(Process* process)
@@ -134,13 +137,13 @@ public:
 		if (process->CurrentCommand()->event == EVT_START) 
 		{
 			// Additional implementation of EVT_START is in main() that creates a new process
-			process->Status = Blocked;
+			process->Status = Ready;
 			//cout << "Process: " << process->Pid << ", Started" << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_CPU)//process goes to RQ
 		{
 			ReadyQ->push(process);
-			process->Status = Blocked;
+			process->Status = Running;
 			//cout << "Process: " << process->Pid <<", Added to ReadyQ" << endl;
 			//Process 0 starts at time 10 ms
 #if COMMENTED
@@ -164,12 +167,14 @@ public:
 		{
 			int num = process->CurrentCommand()->num;
 			HW->Locks[num]->Unlock();
+			ReadyQ->push(process);
+			process->Status = Ready;
 			//cout << "Process: " << process->Pid << ", Released Lock " << num << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_OUTPUT)//goes to user immediately
 		{
 			HW->UC->ProcessList->push_back(process);
-			process->Status = Running;
+			process->Status = Blocked;
 			//cout << "Process: " << process->Pid << ", At UserConsole" << endl;
 		}
 		else if (process->CurrentCommand()->event == EVT_END)//process terminates
@@ -242,7 +247,7 @@ public:
 	//	}
 	//}
 
-	void CleanUp()
+	void RemoveTerminatedProcesses()
 	{
 		vector<Process*>* newList = new vector<Process*>();
 		for (int i = 0; i < ProcessList->size();i++)

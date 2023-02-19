@@ -10,6 +10,7 @@ using namespace std;
 
 enum Status
 {
+	New,
 	Ready, // When ready to go to next state
 	Blocked, // Waiting in Queue for resource such as SSD, LOCk or UserConsole
 	Running, // On CPU, SSD, User Console
@@ -20,6 +21,8 @@ string ToString(Status s)
 {
 	switch (s)
 	{
+	case New:
+		return "New";
 	case Ready:
 		return "Ready";
 	case Blocked:
@@ -38,14 +41,14 @@ public:
 	int Pid;
 
 	vector<Command*>* CommandList = new vector<Command*>() ;//commands added to
-	int c = -1;
+	int c = 0;
 	int amount;
 
 	long MaxTimer = 0;
 	long Timer = 0; //starting time is specifies by START
 	long TotalTime = 0;
 
-	Status Status = Ready;
+	Status Status = New;
 
 	bool Report = false;
 

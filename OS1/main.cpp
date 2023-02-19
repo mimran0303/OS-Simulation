@@ -24,13 +24,6 @@ void ReportSystemStatus(OperatingSystem* OS);
 Hardware* HW = new Hardware();
 OperatingSystem* OS = new OperatingSystem(HW);
 
-//int main()
-//{
-//	
-//	test_fqueue();
-//
-//	return 0;
-//}
 int main()
 {
 	HW->Initialize(OS->SSDQ, OS->LockQ);
@@ -114,6 +107,7 @@ int main()
 	ReportSystemStatus(OS);
 
 	int elapsedtime = 0;
+
 	while (true)
 	{
 		elapsedtime ++;
@@ -122,7 +116,6 @@ int main()
 		ReportSystemStatus(OS);
 		if (OS->ProcessList->size() == 0)
 			break;
-		Sleep(0.5);
 	}
 
 		cout << "SUMMARY:" << endl;

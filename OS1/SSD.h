@@ -28,17 +28,12 @@ public:
 		{
 			MyProcess = Queue->front();
 			Queue->pop();
-			MyProcess->Status = Running;
-			return;
 		}
 
 		if (MyProcess == NULL)
 			return;
 
-		if (MyProcess->Status == Running)
-		{
-			MyProcess->DoWork();
-		}
+		MyProcess->DoWork();
 
 		if (MyProcess->IsTimerExpired())
 		{
@@ -46,9 +41,6 @@ public:
 			MyProcess->Report = true;
 			MyProcess = NULL;
 		}
-
-		//cout << " SSD DOING WORK " << endl;
-
 	}
 };
 

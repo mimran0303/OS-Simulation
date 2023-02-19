@@ -28,7 +28,6 @@ public:
 		if (myprocess == NULL)
 			return;
 
-		myprocess->Status = Running;
 		myprocess->DoWork();
 
 		if (myprocess->IsTimerExpired())
