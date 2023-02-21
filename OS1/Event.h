@@ -9,21 +9,23 @@ const char* ToString(Event e)
 {
 	switch (e)
 	{
-	case EVT_START:
-		return "START";
-	case EVT_END:
-		return "END";
-	case EVT_CPU:
-		return "CPU";
-	case EVT_SSD:
-		return "SSD";
-	case EVT_NCORES:
-		return"NCORES";
-	case EVT_OUTPUT:
-		return"OUTPUT";
-	case EVT_LOCK:
-		return "LOCK";
-	case EVT_UNLOCK:
-		return "UNLOCK";
+		case EVT_START:
+			return "START";
+		case EVT_END:
+			return "END";
+		case EVT_CPU:
+			return "CPU";
+		case EVT_SSD:
+			return "SSD";
+		case EVT_NCORES:
+			return "NCORES";
+		case EVT_OUTPUT:
+			return "OUTPUT";
+		case EVT_LOCK:
+			return "LOCK";
+		case EVT_UNLOCK:
+			return "UNLOCK";
+		default:
+			return "NOT FOUND";
 	}
 }

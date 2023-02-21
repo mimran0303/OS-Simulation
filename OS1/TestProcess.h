@@ -4,7 +4,6 @@
 #include<queue>
 #include<string>
 #include<vector>
-#include <Windows.h>
 #include "Process.h"
 
 int test_process()
@@ -15,14 +14,14 @@ int test_process()
 	{
 		p1->DoWork();
 		Sleep(1000);
-		if (p1->Status == EVT_LOCK)
+		if (p1->EnumStatus == EVT_LOCK)
 		{
 			// if ()
 			{
 
 			}
 		}
-		if (p1->Status == Terminated)
+		if (p1->EnumStatus == Terminated)
 			break;
 	}
 

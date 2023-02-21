@@ -8,7 +8,7 @@
 
 using namespace std;
 
-enum Status
+enum EnumStatus
 {
 	New,
 	Ready, // When ready to go to next state
@@ -17,20 +17,22 @@ enum Status
 	Terminated // Program finsihed nothing to run
 };
 
-string ToString(Status s)
+string ToString(EnumStatus s)
 {
 	switch (s)
 	{
-	case New:
-		return "New";
-	case Ready:
-		return "Ready";
-	case Blocked:
-		return "Blocked";
-	case Running:
-		return "Running";
-	case Terminated:
-		return "Terminated";
+		case New:
+			return "New";
+		case Ready:
+			return "Ready";
+		case Blocked:
+			return "Blocked";
+		case Running:
+			return "Running";
+		case Terminated:
+			return "Terminated";
+		default:
+			return "NOT FOUND";
 	}
 }
 
@@ -48,7 +50,7 @@ public:
 	long Timer = 0; //starting time is specifies by START
 	long TotalTime = 0;
 
-	Status Status = New;
+	EnumStatus Status = New;
 
 	bool Report = false;
 

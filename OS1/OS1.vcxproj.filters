@@ -65,5 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="example output.txt" />
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

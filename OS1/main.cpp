@@ -24,6 +24,7 @@ using namespace std;
 
 Command* CreateCommand(string& instruct);
 void ReportSystemStatus(OperatingSystem* OS);
+char* StringDuplicate(const char* s);
 
 Hardware* HW = new Hardware();
 OperatingSystem* OS = new OperatingSystem(HW);
@@ -141,11 +142,11 @@ int main()
 	//
 	ReportSystemStatus(OS);
 
-	int elapsedtime = 0;
+	//int elapsedtime = 0;
 
 	while (true)
 	{
-		elapsedtime ++;
+		//elapsedtime ++;
 		OS->DoWork();
 		HW->DoWork();
 		ReportSystemStatus(OS);
@@ -154,7 +155,7 @@ int main()
 	}
 
 	cout << "SUMMARY:" << endl;
-	cout << "Total elapsed time : " << elapsedtime << " ms" << endl;
+	//cout << "Total elapsed time : " << elapsedtime << " ms" << endl;
 
 	int TotalProcessRunTime = 0;
 	for (int i = 0;i < OS->DeadProcessList->size();i++)
@@ -167,7 +168,7 @@ int main()
 Command* CreateCommand(string& instruct) //input originally char instruct[]
 {
 	vector<string>* result = new vector<string>();
-	char* split = strtok(_strdup(instruct.c_str()), " ");
+	char* split = strtok(StringDuplicate(instruct.c_str()), " ");
 	while (split != NULL)
 	{
 		cout << split << endl;
@@ -191,6 +192,10 @@ Command* CreateCommand(string& instruct) //input originally char instruct[]
 		int time = stoi(result->at(1));
 		Command* two = new Command(result->at(0), time);
 		return two;
+	}
+	else
+	{
+		return NULL;
 	}
 }
 
