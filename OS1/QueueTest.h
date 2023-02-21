@@ -7,7 +7,6 @@
 #include"Hardware.h"
 #include<string>
 #include<vector>
-#include <Windows.h>
 #include "Process.h"
 
 int test_fqueue()

@@ -1,5 +1,6 @@
 #pragma once
-
+#include<strings.h>
+#include<string.h>
 #include <queue>
 #include <vector>
 #include "Process.h"
@@ -61,4 +62,20 @@ typedef vector<Process*> ProcessVector;
 
 const static int LOCK_COUNT = 2;
 
+int StringCompare(const char* string1, const char* string2)
+{
+#ifdef WINDOWS
+	return _strcmpi(string1, string2);
+#else 
+	return strcasecmp(string1, string2);
+#endif
+}
+char* StringDuplicate(const char* s)
+{
+#ifdef WINDOWS
+	return _strdup(s);
+#else
+	return strdup(s);
+#endif
+}
 const static bool DEBUG = false;
