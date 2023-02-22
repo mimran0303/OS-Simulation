@@ -55,7 +55,8 @@ public:
 		{
 			event = EVT_SSD;
 		}
-		if (StringCompare(_param_ev.c_str(), "OUTPUT") == 0) //adds to global time
+		if	( StringCompare(_param_ev.c_str(), "OUTPUT") == 0 ||
+			( StringCompare(_param_ev.c_str(), "USER") == 0 ) ) //adds to global time
 		{
 			event = EVT_OUTPUT;
 		}

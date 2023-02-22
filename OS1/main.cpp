@@ -77,7 +77,6 @@ int main()
 			continue;
 		}
 
-		cout << "Create Command " << cmd->event << " " << cmd->num << endl;
 		if (p != NULL)
 			p->CommandList->push_back(cmd); //line only work if very first command is START
 		else
@@ -96,10 +95,9 @@ int main()
 
 	while (true)
 	{
-		cout << " -- " << endl;
 		OS->DoWork();
 		HW->DoWork();
-		// ReportSystemStatus(OS);
+		ReportSystemStatus(OS);
 		if (OS->ProcessList->size() == 0)
 			break;
 	}
