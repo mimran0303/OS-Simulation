@@ -60,7 +60,7 @@ typedef fqueue ReadyQueue;
 typedef queue<Process*> SSDQueue;
 typedef vector<Process*> ProcessVector;
 
-const static int LOCK_COUNT = 2;
+const static int LOCK_COUNT = 64;
 
 int StringCompare(const char* string1, const char* string2)
 {

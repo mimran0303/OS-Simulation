@@ -36,6 +36,19 @@ bool IsAlphaNum(string s)
 	return result;
 }
 
+string names[] = {
+"NCORES 1",
+"START 1",
+"CPU 200",
+"SSD 100",
+"CPU 200",
+"LOCK 1",
+"CPU 100",
+"UNLOCK 1",
+"CPU 100",
+"END"
+};
+
 int main()
 {
 	HW->Initialize(OS->SSDQ, OS->LockQ);
@@ -47,8 +60,14 @@ int main()
 	int pid = 0;
 
 	string line;
-	while (getline(cin, line))
+
+	// while (getline(cin, line))
+	
+	int i = -1;
+	while(++i < 10)
 	{
+		line = names[i];
+
 		if(!IsAlphaNum(line))
 			continue;
 
