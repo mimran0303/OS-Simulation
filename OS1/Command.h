@@ -55,7 +55,7 @@ public:
 		{
 			event = EVT_SSD;
 		}
-		if (StringCompare(_param_ev.c_str(), "USER") == 0) //adds to global time
+		if (StringCompare(_param_ev.c_str(), "OUTPUT") == 0) //adds to global time
 		{
 			event = EVT_OUTPUT;
 		}
@@ -70,6 +70,11 @@ public:
 		if (StringCompare(_param_ev.c_str(), "UNLOCK") == 0)//targets a lock
 		{
 			event = EVT_UNLOCK;
+		}
+		if (StringCompare(_param_ev.c_str(), "END") == 0)//doesnt have time, and no amount
+		{
+			event = EVT_END;
+			num = 0;
 		}
 	}
 

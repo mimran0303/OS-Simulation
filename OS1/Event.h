@@ -2,7 +2,14 @@
 
 enum Event
 {
-	EVT_START, EVT_END, EVT_CPU, EVT_SSD, EVT_NCORES, EVT_LOCK, EVT_UNLOCK, EVT_OUTPUT
+	EVT_START,
+	EVT_END,
+	EVT_CPU,
+	EVT_SSD,
+	EVT_NCORES,
+	EVT_LOCK,
+	EVT_UNLOCK,
+	EVT_OUTPUT
 };
 
 const char* ToString(Event e)
@@ -19,12 +26,12 @@ const char* ToString(Event e)
 			return "SSD";
 		case EVT_NCORES:
 			return "NCORES";
-		case EVT_OUTPUT:
-			return "OUTPUT";
 		case EVT_LOCK:
 			return "LOCK";
 		case EVT_UNLOCK:
 			return "UNLOCK";
+		case EVT_OUTPUT:
+			return "OUTPUT";
 		default:
 			return "NOT FOUND";
 	}

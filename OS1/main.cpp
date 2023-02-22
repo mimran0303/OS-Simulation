@@ -9,12 +9,12 @@
 #include <iostream>
 #include <string>
 #include "Definition.h"
-#include "TestEnum.h"
 #include "QueueTest.h"
 #include "Event.h"
 #include "Hardware.h"
 #include "OperatingSystem.h"
 #include "CPU.h"
+#include "Process.h"
 
 using namespace std;
 
@@ -24,6 +24,17 @@ char* StringDuplicate(const char* s);
 
 Hardware* HW = new Hardware();
 OperatingSystem* OS = new OperatingSystem(HW);
+
+bool IsAlphaNum(string s)
+{
+	bool result = false;
+	for(int i=0; i< s.length(); i++)
+	{
+		if(isalnum(s.at(i)))
+			result = true;
+	}
+	return result;
+}
 
 int main()
 {
@@ -38,28 +49,10 @@ int main()
 	string line;
 	while (getline(cin, line))
 	{
+		if(!IsAlphaNum(line))
+			continue;
+
 		cout << line << endl;
-
-		if (cin.eof() || line.empty())
-			break;
-
-#if REMOVED
-	
-		// getline(cin, line);
-		cin.getline(line);
-		cout << "Read -- " << line << endl;
-		if (cin.eof() || line.empty())
-			break;
-#endif
-
-#if REMOVED
-		char _line[512];
-		char* result;
-		fgets(_line, sizeof(_line), stdin);
-		if (_line == NULL)
-			break;
-		string line(_line);
-#endif
 
 		Command* cmd = CreateCommand(line);
 		if (cmd->event == EVT_NCORES)//ncores = # of cpu
@@ -84,6 +77,7 @@ int main()
 			continue;
 		}
 
+		cout << "Create Command " << cmd->event << " " << cmd->num << endl;
 		if (p != NULL)
 			p->CommandList->push_back(cmd); //line only work if very first command is START
 		else
@@ -94,7 +88,7 @@ int main()
 	cout << "Starting Operating System....." << endl;
 
 	//
-	// Stage 2: Orchestration - Do Work in Timer
+	// Stage 2: Run Commands
 	//
 	ReportSystemStatus(OS);
 
@@ -102,12 +96,10 @@ int main()
 
 	while (true)
 	{
-		elapsedtime ++;
-		cout << elapsedtime << endl;
-
+		cout << " -- " << endl;
 		OS->DoWork();
 		HW->DoWork();
-		ReportSystemStatus(OS);
+		// ReportSystemStatus(OS);
 		if (OS->ProcessList->size() == 0)
 			break;
 	}
