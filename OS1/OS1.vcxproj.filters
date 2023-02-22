@@ -62,6 +62,9 @@
     <ClInclude Include="QueueTest.h">
       <Filter>Test</Filter>
     </ClInclude>
+    <ClInclude Include="TestData.h">
+      <Filter>Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="example output.txt" />

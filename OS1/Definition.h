@@ -1,5 +1,5 @@
 #pragma once
-#include<strings.h>
+//#include<strings.h>
 #include<string.h>
 #include <queue>
 #include <vector>

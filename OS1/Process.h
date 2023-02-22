@@ -57,6 +57,7 @@ public:
 	Process(int pid)
 	{
 		Pid = pid;
+		cout << "new process created " << pid << endl;
 	}
 
 	Command* CurrentCommand()
