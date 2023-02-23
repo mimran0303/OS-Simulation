@@ -1,11 +1,11 @@
 #pragma once
 
-#include<iostream>
-#include<queue>
+#include <iostream>
+#include <queue>
 #include "UserConsole.h"
-#include"Process.h"
-#include"Command.h"
-#include"Hardware.h"
+#include "Process.h"
+#include "Command.h"
+#include "Hardware.h"
 
 using namespace std;
 
@@ -63,6 +63,7 @@ public:
 	{
 		BeforeNextCommand(process);
 		ScheduleNextCommand(process);
+		AfterNextCommand(process);
 	}
 
 	void BeforeNextCommand(Process* process)
@@ -91,61 +92,80 @@ public:
 			return;
 		}
 
-		process->MaxTimer = process->CurrentCommand()->num;
-		process->ResetTimer();
 		process->Report = true;
 
-		//ISSUES:
-		//status in start summary should be running or ready
-		//status in end summary should be terminated or blocked
-		// status of ready queue inaccurate because of statuses
-		//we are having issues with total time in terminated summary
 		if (process->CurrentCommand()->event == EVT_START) 
 		{
-			// Additional implementation of EVT_START is in main() that creates a new process
-			// process->Status = Ready;
+			process->MaxTimer = process->CurrentCommand()->num;
+			process->ResetTimer();
+
 			if (DEBUG) cout << "Process: " << process->Pid << ", Started" << endl;
 		}
-		else if (process->CurrentCommand()->event == EVT_CPU)//process goes to RQ
+		else if (process->CurrentCommand()->event == EVT_CPU)
 		{
+			process->MaxTimer = process->CurrentCommand()->num;
+			process->ResetTimer();
+
 			ReadyQ->push(process);
 			process->Status = Ready;
+
 			if (DEBUG) cout << "Process: " << process->Pid <<", Added to ReadyQ" << endl;
-			//Process 0 starts at time 10 ms
 		}
-		else if (process->CurrentCommand()->event == EVT_SSD)//goes to ssd queue IF more than one process trying to acecess SSD
+		else if (process->CurrentCommand()->event == EVT_SSD)
 		{
+			process->MaxTimer = process->CurrentCommand()->num;
+			process->ResetTimer();
+
 			SSDQ->push(process);
 			process->Status = Blocked;
+
 			if (DEBUG) cout << "Process: " << process->Pid << ", Added to SSDQ" << endl;
 		}
-		else if (process->CurrentCommand()->event == EVT_LOCK)//lock specified by process is in locked state
+		else if (process->CurrentCommand()->event == EVT_LOCK)
 		{
+			process->MaxTimer = 0;
+			process->ResetTimer();
+			
 			int num = process->CurrentCommand()->num;
 			LockQ[num]->push(process);
 			process->Status = Blocked; 
+
 			if (DEBUG) cout << "Process: " << process->Pid << ", Acquiered LockQ " << num << endl;
 		}	
-		else if (process->CurrentCommand()->event == EVT_UNLOCK)//lock specified by process is in unlocked state
+		else if (process->CurrentCommand()->event == EVT_UNLOCK)
 		{
+			process->MaxTimer = 0;
+			process->ResetTimer();
+
 			int num = process->CurrentCommand()->num;
 			HW->Locks[num]->Unlock();
 			process->Status = Ready;
+
 			if (DEBUG) cout << "Process: " << process->Pid << ", Released Lock " << num << endl;
 		}
-		else if (process->CurrentCommand()->event == EVT_OUTPUT)//goes to user immediately
+		else if (process->CurrentCommand()->event == EVT_OUTPUT)
 		{
+			process->MaxTimer = process->CurrentCommand()->num;
+			process->ResetTimer();
+
 			HW->UC->ProcessList->push_back(process);
 			process->Status = Blocked;
+
 			if (DEBUG) cout << "Process: " << process->Pid << ", At UserConsole" << endl;
 		}
-		else if (process->CurrentCommand()->event == EVT_END)//process terminates
+		else if (process->CurrentCommand()->event == EVT_END)
 		{
+			process->MaxTimer = process->CurrentCommand()->num;
+			process->ResetTimer();
+
 			process->Status = Terminated;
-			 cout << "Process " << process->Pid << " terminates at time " << process->TotalTime << " ms" << endl;
+			if (DEBUG) cout << "Process " << process->Pid << " terminates at time " << process->TotalTime << " ms" << endl;
 			Report();
 		}
-			
+	}
+
+	void AfterNextCommand(Process* process)
+	{
 	}
 
 	void RemoveTerminatedProcesses()
@@ -211,6 +231,5 @@ public:
 		}
 		cout << endl;
 	}
-	
 };
 

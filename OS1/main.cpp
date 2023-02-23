@@ -70,15 +70,16 @@ int main()
 
 		if(!IsAlphaNum(line))
 			continue;
-
-		cout << line << endl;
+		
+		if(DEBUG) cout << line << endl;
 
 		Command* cmd = CreateCommand(line);
 		if (cmd->event == EVT_NCORES)//ncores = # of cpu
 		{
 			int existingCpuCount = HW->CPUS->size();
 			int cpu_amount = cmd->num - existingCpuCount;
-			cout << "number of CPUS are" << cpu_amount << endl;
+
+			if (DEBUG) cout << "number of CPUS are " << cpu_amount << endl;
 
 			for (int i = 0;i < cpu_amount;i++)
 			{
@@ -93,7 +94,6 @@ int main()
 			p = new Process(pid++);
 			p->SetTimer(cmd->num);
 			OS->ProcessList->push_back(p);
-			continue;
 		}
 
 		if (p != NULL)
@@ -102,8 +102,10 @@ int main()
 			cout << "Error: No [Start] command defined to create a process " << endl;
 	}
 
-	cout << "Finished Processing Input. " << endl;
-	cout << "Starting Operating System....." << endl;
+
+	if (DEBUG) cout << "Finished Processing Input. " << endl;
+
+	if (DEBUG) cout << "Starting Operating System....." << endl;
 
 	//
 	// Stage 2: Run Commands

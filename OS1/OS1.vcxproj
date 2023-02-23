@@ -142,12 +142,9 @@
     <ClInclude Include="QueueTest.h" />
     <ClInclude Include="SSD.h" />
     <ClInclude Include="TestData.h" />
-    <ClInclude Include="TestEnum.h" />
-    <ClInclude Include="TestProcess.h" />
     <ClInclude Include="UserConsole.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="example output.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
