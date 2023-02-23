@@ -36,19 +36,6 @@ bool IsAlphaNum(string s)
 	return result;
 }
 
-string names[] = {
-"NCORES 1",
-"START 1",
-"CPU 200",
-"SSD 100",
-"CPU 200",
-"LOCK 1",
-"CPU 100",
-"UNLOCK 1",
-"CPU 100",
-"END"
-};
-
 int main()
 {
 	HW->Initialize(OS->SSDQ, OS->LockQ);
@@ -61,20 +48,15 @@ int main()
 
 	string line;
 
-	// while (getline(cin, line))
-	
-	int i = -1;
-	while(++i < 10)
+	while (getline(cin, line))
 	{
-		line = names[i];
-
 		if(!IsAlphaNum(line))
 			continue;
 		
 		if(DEBUG) cout << line << endl;
 
 		Command* cmd = CreateCommand(line);
-		if (cmd->event == EVT_NCORES)//ncores = # of cpu
+		if (cmd->event == EVT_NCORES) //ncores = # of cpu
 		{
 			int existingCpuCount = HW->CPUS->size();
 			int cpu_amount = cmd->num - existingCpuCount;
@@ -84,16 +66,18 @@ int main()
 			for (int i = 0;i < cpu_amount;i++)
 			{
 				CPU* cpu = new CPU(OS->ReadyQ);
-				HW->CPUS->push_back(cpu);//not sure how to say push NCORES
+				HW->CPUS->push_back(cpu); //not sure how to say push NCORES
 			}
 			continue;
 		}
 
-		if (cmd->event == EVT_START)//this signifies new process but 1st line is always START 
+		if (cmd->event == EVT_START) //this signifies new process but 1st line is always START 
 		{
 			p = new Process(pid++);
 			p->SetTimer(cmd->num);
 			OS->ProcessList->push_back(p);
+
+			if (DEBUG) cout << "Create Process " << ToString(cmd->event) << endl;
 		}
 
 		if (p != NULL)
@@ -102,17 +86,13 @@ int main()
 			cout << "Error: No [Start] command defined to create a process " << endl;
 	}
 
-
 	if (DEBUG) cout << "Finished Processing Input. " << endl;
-
 	if (DEBUG) cout << "Starting Operating System....." << endl;
 
 	//
 	// Stage 2: Run Commands
 	//
 	ReportSystemStatus(OS);
-
-	int elapsedtime = 0;
 
 	while (true)
 	{
@@ -124,7 +104,6 @@ int main()
 	}
 
 	cout << "SUMMARY:" << endl;
-	//cout << "Total elapsed time : " << elapsedtime << " ms" << endl;
 
 	int TotalProcessRunTime = 0;
 	for (int i = 0;i < OS->DeadProcessList->size();i++)
@@ -134,7 +113,7 @@ int main()
 	cout << "Total Process Run Time time : " << TotalProcessRunTime << " ms" << endl;
 }
 
-Command* CreateCommand(string& instruct) //input originally char instruct[]
+Command* CreateCommand(string& instruct)
 {
 	vector<string>* result = new vector<string>();
 	char* split = strtok(StringDuplicate(instruct.c_str()), " ");
@@ -146,6 +125,7 @@ Command* CreateCommand(string& instruct) //input originally char instruct[]
 	if (result->size() == 1)
 	{
 		Command* one = new Command(result->at(0));
+		if (DEBUG) one->Print();
 		return one;
 
 	}
@@ -153,6 +133,7 @@ Command* CreateCommand(string& instruct) //input originally char instruct[]
 	{
 		int time = stoi(result->at(1));
 		Command* two = new Command(result->at(0), time);
+		if (DEBUG) two->Print();
 		return two;
 	}
 	else

@@ -106,8 +106,7 @@ public:
 
 void ReportProcessStatus(Process* p)
 {
-	return;
-	if (p->Report && p->CurrentCommand() != NULL)
+	if (DEBUG && p->Report && p->CurrentCommand() != NULL)
 	{
 		cout << "Process: " << p->Pid << ", "
 			<< "Command: " << ToString(p->CurrentCommand()->event) << ", "
