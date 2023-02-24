@@ -8,7 +8,7 @@ class Lock
 private:
 
 	LockQueue* Queue;
-	Process* MyProcess = NULL;
+	Process* CurrentProcess = NULL;
 
 public:
 
@@ -29,28 +29,28 @@ public:
 
 	bool IsLockActive()
 	{
-		return (MyProcess != NULL);
+		return (CurrentProcess != NULL);
 	}
 
 	bool IsUnLocked()
 	{
-		return (MyProcess == NULL);
+		return (CurrentProcess == NULL);
 	}
 
 	void BringProcessFromQueueAndLockIt()//like ssd DoWord
 	{
-		MyProcess = Queue->front();
+		CurrentProcess = Queue->front();
 		Queue->pop();
-		MyProcess->Report = true;
+		CurrentProcess->Report = true;
 	}
 
 	void Unlock()//will be unlocked by process that locked in first place
 	{
 		if (IsUnLocked())
 			return;
-		MyProcess->Status = Ready;
-		MyProcess->Report = true;
-		MyProcess = NULL;
+		CurrentProcess->Status = Ready;
+		CurrentProcess->Report = true;
+		CurrentProcess = NULL;
 	}
 };
 

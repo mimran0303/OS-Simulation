@@ -13,7 +13,7 @@ class SSD
 private:
 
 	SSDQueue* Queue;
-	Process* MyProcess = NULL;
+	Process* CurrentProcess = NULL;
 
 public:
 
@@ -24,22 +24,22 @@ public:
 
 	void DoWork()
 	{
-		if (MyProcess == NULL && Queue->size() >= 1)
+		if (CurrentProcess == NULL && Queue->size() >= 1)
 		{
-			MyProcess = Queue->front();
+			CurrentProcess = Queue->front();
 			Queue->pop();
 		}
 
-		if (MyProcess == NULL)
+		if (CurrentProcess == NULL)
 			return;
 
-		MyProcess->DoWork();
+		CurrentProcess->DoWork();
 
-		if (MyProcess->IsTimerExpired())
+		if (CurrentProcess->IsTimerExpired())
 		{
-			MyProcess->Status = Ready;
-			MyProcess->Report = true;
-			MyProcess = NULL;
+			CurrentProcess->Status = Ready;
+			CurrentProcess->Report = true;
+			CurrentProcess = NULL;
 		}
 	}
 };

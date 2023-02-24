@@ -11,7 +11,7 @@ private:
 	
 
 public:
-	Process* MyProcess = NULL;
+	Process* CurrentProcess = NULL;
 	CPU(ReadyQueue* queue)
 	{
 		Queue = queue;
@@ -19,23 +19,23 @@ public:
 
 	void DoWork()
 	{
-		if (MyProcess == NULL && Queue->size() >= 1)
+		if (CurrentProcess == NULL && Queue->size() >= 1)
 		{
-			MyProcess = Queue->pop();
-			MyProcess->Status = Running;
+			CurrentProcess = Queue->pop();
+			CurrentProcess->Status = Running;
 			return;
 		}
 
-		if (MyProcess == NULL)
+		if (CurrentProcess == NULL)
 			return;
 		
-		MyProcess->DoWork();
+		CurrentProcess->DoWork();
 
-		if (MyProcess->IsTimerExpired())
+		if (CurrentProcess->IsTimerExpired())
 		{
-			MyProcess->Status = Running;
-			MyProcess->Report = true;
-			MyProcess = NULL;
+			CurrentProcess->Status = Running;
+			CurrentProcess->Report = true;
+			CurrentProcess = NULL;
 		}
 
 		//cout << " CPU DOING WORK " << endl;
@@ -43,7 +43,7 @@ public:
 
 	bool ProcessActive()
 	{
-		if (MyProcess == NULL)
+		if (CurrentProcess == NULL)
 			return false;
 		else
 			return true;
