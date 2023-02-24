@@ -25,8 +25,8 @@ public:
 	{
 		if (data->size() > 0)
 		{
-			Process* p = data->at(data->size() - 1);
-			data->erase(data->begin());
+			Process* p = data->at(0);
+			data->erase(data->begin()+0);
 			return p;
 		}
 		else 
@@ -78,4 +78,4 @@ char* StringDuplicate(const char* s)
 	return strdup(s);
 #endif
 }
-const bool DEBUG = true;
+const bool DEBUG = false;

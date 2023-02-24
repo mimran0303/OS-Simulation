@@ -17,6 +17,8 @@
 #include "CPU.h"
 #include "Process.h"
 
+#define READ_FROM_CONSOLE 1
+
 using namespace std;
 
 Command* CreateCommand(string& instruct);
@@ -58,9 +60,9 @@ int main()
 	cout << "File Operned Successfully" << endl;
 
 	while (getline(fin, line))
-#else
-	while (getline(cin, line))
 #endif
+
+	while (getline(cin, line))
 	{
 		if(!IsAlphaNum(line))
 			continue;
@@ -99,10 +101,9 @@ int main()
 	}
 
 #ifndef READ_FROM_CONSOLE
-
 	fin.close();
-
 #endif
+
 	if (DEBUG) cout << "Finished Processing Input. " << endl;
 	if (DEBUG) cout << "Starting Operating System....." << endl;
 
