@@ -20,8 +20,6 @@ public:
 	ProcessVector *ProcessList;
 	ProcessVector* DeadProcessList;
 
-	Process* process0;
-
 	OperatingSystem(Hardware* _hw)
 	{		
 		HW = _hw;

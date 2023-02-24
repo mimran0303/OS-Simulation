@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "Definition.h"
 #include "QueueTest.h"
 #include "Event.h"
@@ -48,7 +49,18 @@ int main()
 
 	string line;
 
+#ifndef READ_FROM_CONSOLE
+	ifstream fin;
+	fin.open("C:\\Users\\fatim\\source\\repos\\OS1\\OS1\\Data\\input1.txt", ios_base::in);
+	if (!fin.is_open())
+		cout << "Failed to Open" << endl;
+
+	cout << "File Operned Successfully" << endl;
+
+	while (getline(fin, line))
+#else
 	while (getline(cin, line))
+#endif
 	{
 		if(!IsAlphaNum(line))
 			continue;
@@ -86,6 +98,11 @@ int main()
 			cout << "Error: No [Start] command defined to create a process " << endl;
 	}
 
+#ifndef READ_FROM_CONSOLE
+
+	fin.close();
+
+#endif
 	if (DEBUG) cout << "Finished Processing Input. " << endl;
 	if (DEBUG) cout << "Starting Operating System....." << endl;
 

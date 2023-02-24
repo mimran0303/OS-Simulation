@@ -4,9 +4,12 @@
 #include <string>
 #include <queue>
 #include <vector>
+#include "Definition.h"
 #include "Command.h"
 
 using namespace std;
+
+extern const bool DEBUG;
 
 enum EnumStatus
 {

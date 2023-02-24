@@ -78,4 +78,4 @@ char* StringDuplicate(const char* s)
 	return strdup(s);
 #endif
 }
-const static bool DEBUG = false;
+const bool DEBUG = true;
